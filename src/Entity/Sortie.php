@@ -25,40 +25,29 @@ class Sortie
     private $nom;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime")
      */
     private $dateHeureDebut;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer")
      */
     private $duree;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="date")
      */
     private $dateLimiteInscription;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer")
      */
     private $nbInscriptionsMax;
 
     /**
-     * @ORM\Column(type="text", length=255, nullable=true)
+     * @ORM\Column(type="text", length=255)
      */
     private $infosSortie;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Participant::class, mappedBy="sortie")
-     */
-    private $participants;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Participant::class, inversedBy="sortiesPourUnOrganisateur")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $participantOrganisateur;
 
     /**
      * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="sorties")
@@ -78,10 +67,22 @@ class Sortie
      */
     private $lieu;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Participant::class, mappedBy="sorties")
+     */
+    private $participants;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Participant::class, inversedBy="sortiesPourUnOrganisateur")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $participantOrganisateur;
+
     public function __construct()
     {
         $this->participants = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -160,45 +161,6 @@ class Sortie
         return $this;
     }
 
-    /**
-     * @return Collection<int, Participant>
-     */
-    public function getParticipants(): Collection
-    {
-        return $this->participants;
-    }
-
-    public function addParticipant(Participant $participant): self
-    {
-        if (!$this->participants->contains($participant)) {
-            $this->participants[] = $participant;
-            $participant->addSortie($this);
-        }
-
-        return $this;
-    }
-
-    public function removeParticipant(Participant $participant): self
-    {
-        if ($this->participants->removeElement($participant)) {
-            $participant->removeSortie($this);
-        }
-
-        return $this;
-    }
-
-    public function getParticipantOrganisateur(): ?Participant
-    {
-        return $this->participantOrganisateur;
-    }
-
-    public function setParticipantOrganisateur(?Participant $participantOrganisateur): self
-    {
-        $this->participantOrganisateur = $participantOrganisateur;
-
-        return $this;
-    }
-
     public function getCampus(): ?Campus
     {
         return $this->campus;
@@ -231,6 +193,45 @@ class Sortie
     public function setLieu(?Lieu $lieu): self
     {
         $this->lieu = $lieu;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Participant>
+     */
+    public function getParticipants(): Collection
+    {
+        return $this->participants;
+    }
+
+    public function addParticipant(Participant $participant): self
+    {
+        if (!$this->participants->contains($participant)) {
+            $this->participants[] = $participant;
+            $participant->addSorty($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipant(Participant $participant): self
+    {
+        if ($this->participants->removeElement($participant)) {
+            $participant->removeSorty($this);
+        }
+
+        return $this;
+    }
+
+    public function getParticipantOrganisateur(): ?Participant
+    {
+        return $this->participantOrganisateur;
+    }
+
+    public function setParticipantOrganisateur(?Participant $participantOrganisateur): self
+    {
+        $this->participantOrganisateur = $participantOrganisateur;
 
         return $this;
     }
