@@ -74,7 +74,6 @@ class ParticipantRepository extends ServiceEntityRepository implements PasswordU
 
     /**
      * Used when the user logs in, it allows to login with an email or username.
- 
      */
     public function loadUserByIdentifier(string $usernameOrEmail): ?Participant
     {
