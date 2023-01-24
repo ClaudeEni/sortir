@@ -1,10 +1,38 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    {{ participant.pseudonyme }}
+{% endblock %}
 {% block body %}
 
+    {# si on visualise le profil d'un autre participant #}
+    {% if app.user == participant %}
+    <div >
+        <h2>{{ participant.pseudonyme }}</h2>
+        <div>Nom: {{ participant.nom }}</div>
+        <div>Prénom: {{ participant.prenom }}</div>
+        {% if(participant.telephone) %}
+            <div>Téléphone: {{ participant.telephone }}</div>
+        {% endif %}
+        <div>Email: {{ participant.mail }}</div>
+        <div>Campus: {{ participant.campus.nom }}</div>
+    </div>
+
+    {# si on visualise son propre profil #}
+    {% else %}
+
+        <h2>Mon profil</h2>
+        {{form_start(ParticipantForm) }}
+        {{form_widget(ParticipantForm) }}
+        <a href="{{ path('modif_mdp',{'id':participant.id}) }}">Modifier mon mot de passe</a>
+        <p style="text-align: center">
+
+            <a href="{{ path('home') }}"><button name="bouton" value="Enregistrer">Enregistrer</button></a>
+            <a href="{{ path('home') }}"><button name="bouton" value="Annuler">Annuler</button></a>
+        </p>
+        {{form_end(ParticipantForm) }}
+
+    {% endif %}
 {% endblock %}
 
-{% block title %}
-
-{% endblock %}
 

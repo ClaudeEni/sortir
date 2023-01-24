@@ -6,11 +6,16 @@ use App\Repository\ParticipantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
+// * @UniqueEntity(fields={"mail"}, message="Ce mail est déjà utilisé")
+// * @UniqueEntity(fields={"pseudonyme"}, message="Ce pseudo est déjà utilisé")
+ *
  */
 class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -23,6 +28,8 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="veuillez renseigner un pseudonyme (entre 3 et 50 caractères)")
+     * @Assert\Length(min=3,max=50,minMessage="Votre pseudonyme doit comporter 3 caractères minimum",maxMessage="Le pseudonyme doit pas dépasser 50 caractères")
      */
     private $pseudonyme;
 
@@ -34,21 +41,27 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="veuillez renseigner un nom (entre 2 et 255 caractères)")
+     * @Assert\Length(min=2,max=255,minMessage="Votre nom doit comporter 2 caractères minimum",maxMessage="Le nom doit pas dépasser 255 caractères")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="veuillez renseigner un prénom (entre 2 et 255 caractères)")
+     * @Assert\Length(min=2,max=255,minMessage="Votre prénom doit comporter 2 caractères minimum",maxMessage="Le prénom doit pas dépasser 255 caractères")
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(min=10,max=10,minMessage="Le numéro de téléphone doit comporter 10 caractères",maxMessage="Le numéro de téléphone doit comporter 10 caractères")
      */
     private $telephone;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\Email(message="Ce mail n'est pas valide")
      */
     private $mail;
 
