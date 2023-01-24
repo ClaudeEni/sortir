@@ -20,7 +20,7 @@ class ModificationProfilType extends AbstractType
     {
         $builder
             ->add('pseudonyme', TextType::class, ['label'=>'pseudonyme', 'required'=>false])
-            ->add('nom', TextType::class, ['label'=>'Nom', 'required'=>false])
+            ->add('nom', TextType::class, ['label'=>'nom', 'required'=>false])
             ->add('prenom', TextType::class, ['label'=>'Prenom', 'required'=>false])
             ->add('telephone', TextType::class, ['label'=>'Téléphone', 'required'=>false])
             ->add('mail', TextType::class, ['label'=>'Mail', 'required'=>false])

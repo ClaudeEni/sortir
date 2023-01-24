@@ -13,8 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
-// * @UniqueEntity(fields={"mail"}, message="Ce mail est déjà utilisé")
-// * @UniqueEntity(fields={"pseudonyme"}, message="Ce pseudo est déjà utilisé")
+ * @UniqueEntity(fields={"mail"}, message="Ce mail est déjà utilisé")
+ * @UniqueEntity(fields={"pseudonyme"}, message="Ce pseudo est déjà utilisé")
  *
  */
 class Participant implements UserInterface, PasswordAuthenticatedUserInterface
@@ -41,14 +41,14 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="veuillez renseigner un nom (entre 2 et 255 caractères)")
+     * @Assert\NotBlank(message="Vous devez renseigner un nom")
      * @Assert\Length(min=2,max=255,minMessage="Votre nom doit comporter 2 caractères minimum",maxMessage="Le nom doit pas dépasser 255 caractères")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="veuillez renseigner un prénom (entre 2 et 255 caractères)")
+     * @Assert\NotBlank(message="Vous devez renseigner un prénom")
      * @Assert\Length(min=2,max=255,minMessage="Votre prénom doit comporter 2 caractères minimum",maxMessage="Le prénom doit pas dépasser 255 caractères")
      */
     private $prenom;

@@ -30,8 +30,7 @@ class ProfilController extends AbstractController
     public function afficherProfil($id,
                                    Request $request,
                                    ParticipantRepository $participantRepository,
-                                   EntityManagerInterface $entityManager,
-                                    UserPasswordHasherInterface $PasswordHasher): Response
+                                   EntityManagerInterface $entityManager): Response
     {
         $participant = $participantRepository->find($id);
 
@@ -44,9 +43,6 @@ class ProfilController extends AbstractController
         $modificationProfilForm->handleRequest($request);
 
         if($modificationProfilForm->isSubmitted() && $modificationProfilForm->isValid()){
-//            $participant->setPassword(
-//                $PasswordHasher->hashPassword($participant,$modificationProfilForm->get('password')->getData())
-//            );
             $entityManager->persist($participant);
             $entityManager->flush();
 
