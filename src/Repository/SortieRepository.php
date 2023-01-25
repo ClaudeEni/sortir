@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Sortie;
+use App\Model\Search;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -63,4 +64,41 @@ class SortieRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function findSorties(Search $search) : array
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+            if ($search->getNom()){
+                $queryBuilder
+                    ->andWhere('s.nom like :val')
+                    ->setParameter('val', "%".$search->getNom()."%");
+            }
+            if ($search->getCampus()){
+                $queryBuilder
+                    ->andWhere('s.campus =  :campus')
+                    ->setParameter('campus', $search->getCampus());
+            }
+            if ($search->getDateDebut()){
+                $queryBuilder
+                    ->andWhere('s.dateHeureDebut >=  :dateDebut')
+                    ->setParameter('dateDebut', $search->getDateDebut());
+
+            }
+            if ($search->getDateFin()){
+                $queryBuilder
+                    ->andWhere('s.dateHeureDebut <=  :dateFin')
+                    ->setParameter('dateFin', $search->getDateFin());
+
+            }
+            if ($search->isSortiePassee()){
+                $queryBuilder
+                    ->andWhere('s.dateHeureDebut < current_Date()');
+            }
+//            ->andWhere('s.nom like :val')
+//            ->setParameter('val', "%".$lib."%")
+//            ->orderBy('s.id', 'ASC')
+//            ->setMaxResults(10)
+        $query  = $queryBuilder->getQuery();
+        return $query->getResult();
+
+    }
 }

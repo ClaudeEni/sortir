@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Sortie entre élèves
+{% endblock %}
+
+{% block body %}
+    <h3>Filtrer les sorties</h3>
+{#    {{ form_start(searchForm) }}#}
+{#    {{ form_widget(searchForm) }}#}
+{#        <button>Rechercher</button>#}
+{#    {{ form_end(searchForm) }}#}
+
+    Campus {{ form_row(searchForm.nom) }}
+    {{ form_row(searchForm.campus) }}
+    {{ form_row(searchForm.dateDebut) }}
+    {{ form_row(searchForm.dateFin) }}
+    {{ form_row(searchForm.sortiePassee) }}
+
+    <br>
+    <table>
+        <tr>
+            <th>Nom de la sortie</th>
+            <th>Campus</th>
+            <th>Date la sortie</th>
+            <th>Clôture</th>
+            <th>Inscrits/places</th>
+            <th>Etat</th>
+            <th>Inscrit</th>
+            <th>Organisateur</th>
+            <th>Actions</th>
+        </tr>
+    {% for sortie in sorties %}
+        <tr>
+            <td>{{sortie.nom}}</td>
+            <td>{{ sortie.campus.nom }}</td>
+            <td>{{ sortie.dateHeureDebut|date("d/m/Y H:II") }}</td>
+            <td>{{ sortie.dateLimiteInscription|date("d/m/Y") }}</td>
+            <td>{{ sortie.participants.count}}/{{ sortie.nbInscriptionsMax}}</td>
+            <td>{{ sortie.etat.libelle }}</td>
+            <td>
+                {% for participant in sortie.participants %}
+                    {% for p in participant %}
+                        p.nom
+                    {% endfor %}
+                {% endfor %}
+            </td>
+            <td>{{ sortie.participantOrganisateur.nom }}</td>
+            <td></td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
+
