@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+    <h2>Modification du mot de passe de {{ participant.pseudonyme }}</h2>
+    {{form_start(ParticipantForm) }}
+    {{form_widget(ParticipantForm) }}
+    <a href=""><button name="bouton" value="Enregistrer">Enregistrer</button></a>
+    {{form_end(ParticipantForm) }}
+
+{% endblock %}
+
