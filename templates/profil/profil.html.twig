@@ -3,37 +3,110 @@
 {% block title %}
     {{ participant.pseudonyme }}
 {% endblock %}
-{% block body %}
 
-    {# si on visualise le profil d'un autre participant #}
-    {% if app.user == participant %}
-    <div >
-        <h2>{{ participant.pseudonyme }}</h2>
-        <div>Nom: {{ participant.nom }}</div>
-        <div>Prénom: {{ participant.prenom }}</div>
-        {% if(participant.telephone) %}
-            <div>Téléphone: {{ participant.telephone }}</div>
-        {% endif %}
-        <div>Email: {{ participant.mail }}</div>
-        <div>Campus: {{ participant.campus.nom }}</div>
-    </div>
-
-    {# si on visualise son propre profil #}
-    {% else %}
-
-        <h2>Mon profil</h2>
-
-        {{form_start(ParticipantForm) }}
-        {{form_widget(ParticipantForm) }}
-        <a href="{{ path('modif_mdp',{'id':participant.id}) }}">Modifier mon mot de passe</a>
-        <p style="text-align: center">
-            <a href="{{ path('home') }}"><button class="btn btn-lg btn-primary" name="bouton" value="Enregistrer">Enregistrer</button></a>
-            <a href="{{ path('home') }}"><button name="bouton" value="Annuler">Annuler</button></a>
-        </p>
-        {{form_end(ParticipantForm) }}
-
-
-    {% endif %}
+{% block stylesheets %}
+    <link href="../../assets/styles/form-custom.css" rel="stylesheet">
 {% endblock %}
 
+{% block body %}
+<main class="form-custom w-100 m-auto text-center">
+{# si on visualise le profil d'un autre participant #}
+    {% if app.user != participant %}
+        <h1 class="h3 mb-3 fw-normal">{{participant.pseudonyme}}</h1>
+            <div class="form-floating">
+                <input type="text" class="form-control" placeholder="Pseudonyme" value={{ participant.pseudonyme }} disabled/>
+                <label>Pseudonyme</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" placeholder="Pseudonyme" value={{ participant.nom }} disabled/>
+                <label>Nom</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" placeholder="Pseudonyme" value={{ participant.prenom }} disabled/>
+                <label>Prénom</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" placeholder="Pseudonyme" value={{ participant.telephone }} disabled/>
+                <label>Téléphone</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" placeholder="Pseudonyme" value={{ participant.mail }} disabled/>
+                <label>Mail</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" placeholder="Pseudonyme" value={{ participant.campus.nom }} disabled/>
+                <label>Campus</label>
+            </div>
+            
+    {% else %}
+        {# si on visualise son propre profil #}
+        {{form_start(ParticipantForm) }}
+            <h1 class="h3 mb-3 fw-normal">Mon profil</h1>
+            <div class="form-floating">
+                {{form_widget(ParticipantForm.pseudonyme, { 'attr': {'class': 'form-control', 'placeholder': "Pseudonyme"} }) }}
+                <label for={{ParticipantForm.pseudonyme.vars.id}}>Pseudonyme</label>
+                {% if form_errors(ParticipantForm.pseudonyme) %}
+                    <div class="alert alert-danger mb-0" role="alert">
+                        {{ form_errors(ParticipantForm.pseudonyme) }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-floating">
+                {{form_widget(ParticipantForm.nom, { 'attr': {'class': 'form-control', 'placeholder': "Nom"} }) }}
+                <label for={{ParticipantForm.nom.vars.id}}>Nom</label>
+                {% if form_errors(ParticipantForm.nom) %}
+                    <div class="alert alert-danger mb-0" role="alert">
+                        {{ form_errors(ParticipantForm.nom) }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-floating">
+                {{form_widget(ParticipantForm.prenom, { 'attr': {'class': 'form-control', 'placeholder': "Prénom"} }) }}
+                <label for={{ParticipantForm.prenom.vars.id}}>Prénom</label>
+                {% if form_errors(ParticipantForm.prenom) %}
+                    <div class="alert alert-danger mb-0" role="alert">
+                        {{ form_errors(ParticipantForm.prenom) }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-floating">
+                {{form_widget(ParticipantForm.telephone, { 'attr': {'class': 'form-control', 'placeholder': "Téléphone"} }) }}
+                <label for={{ParticipantForm.telephone.vars.id}}>Téléphone</label>
+                {% if form_errors(ParticipantForm.telephone) %}
+                    <div class="alert alert-danger mb-0" role="alert">
+                        {{ form_errors(ParticipantForm.telephone) }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-floating">
+                {{form_widget(ParticipantForm.mail, { 'attr': {'class': 'form-control', 'placeholder': "Mail"} }) }}
+                <label for={{ParticipantForm.mail.vars.id}}>Mail</label>
+                {% if form_errors(ParticipantForm.mail) %}
+                    <div class="alert alert-danger mb-0" role="alert">
+                        {{ form_errors(ParticipantForm.mail) }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-floating">
+                {{form_widget(ParticipantForm.campus, { 'attr': {'class': 'form-control', 'placeholder': "Campus"} }) }}
+                <label for={{ParticipantForm.campus.vars.id}}>Campus</label>
+                {% if form_errors(ParticipantForm.campus) %}
+                    <div class="alert alert-danger mb-0" role="alert">
+                        {{ form_errors(ParticipantForm.campus) }}
+                    </div>
+                {% endif %}
+            </div>
+            {{ form_rest(ParticipantForm) }}
 
+
+        <p style="text-align: center">
+            <a href="{{ path('home') }}"><button class="btn btn-primary" name="bouton"
+                    value="Enregistrer">Enregistrer</button></a>
+            <a href="{{ path('home') }}"><button name="bouton" class="btn btn-secondary" value="Annuler">Annuler</button></a>
+        </p>
+        <a class="link-secondary" href="{{ path('modif_mdp',{'id':participant.id}) }}">Modifier mon mot de passe</a>
+        {{form_end(ParticipantForm) }}
+        
+    {% endif %}
+</main>
+{% endblock %}

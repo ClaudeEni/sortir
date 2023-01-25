@@ -1,15 +1,36 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
+    Modifier son mot de passe
+{% endblock %}
 
+{% block stylesheets %}
+    <link href="../../../assets/styles/form-custom.css" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
-    <h2>Modification du mot de passe de {{ participant.pseudonyme }}</h2>
+<main class="form-custom w-100 m-auto text-center">
     {{form_start(ParticipantForm) }}
-    {{form_widget(ParticipantForm) }}
-    <a href=""><button name="bouton" value="Enregistrer">Enregistrer</button></a>
-    {{form_end(ParticipantForm) }}
+            <h1 class="h3 mb-3 fw-normal">Modification du mot de passe de {{ participant.pseudonyme }}</h1>
+            {% if form_errors(ParticipantForm.password.first) %}
+                <div class="alert alert-danger">{{ form_errors(ParticipantForm.password.first) }}</div>
+            {% endif %}
+            <div class="form-floating">
+                {{form_widget(ParticipantForm.password.first, { 'attr': {'class': 'form-control', 'placeholder': "Pseudonyme"} }) }}
+                <label for={{ParticipantForm.password.first.vars.id}}>Nouveau mot de passe</label>
+            </div>
+            <div class="form-floating">
+                {{form_widget(ParticipantForm.password.second, { 'attr': {'class': 'form-control', 'placeholder': "Nom"} }) }}
+                <label for={{ParticipantForm.password.second.vars.id}}>Confirmer</label>
+            </div>
+            {{ form_rest(ParticipantForm) }}
 
+
+        <p style="text-align: center">
+            <a href="{{ path('home') }}"><button class="btn btn-primary" name="bouton"
+                    value="Enregistrer">Enregistrer</button></a>
+        </p>
+        {{form_end(ParticipantForm) }}
+</main>
 {% endblock %}
 
