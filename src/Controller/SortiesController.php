@@ -24,19 +24,27 @@ class SortiesController extends AbstractController
     }
 
     /**
-     * @Route("/sorties/creerSortie", name="/sorties_creerSortie")
+     * @Route("/sorties/creerSortie", name="sorties_creerSortie")
      */
     public function creerSortie(Request $request, EntityManagerInterface $entityManager, EtatRepository $etatRepository, ParticipantRepository $participantRepository): Response
     {
         $sortie = new Sortie();
-        $etatCree = $etatRepository->findOneBy(["libelle" => "Créée"]); // TODO: Les BDD de tous les utilisateurs doivent posséder les mêmes libellés d'états
+        //$user =$this->getUser();
+        //$sortie->setParticipantOrganisateur($user);
+        //$sortie->setCampus($user->getCampus());
+        $etats = $etatRepository ->findAll();
         $participantConnecte = $participantRepository->findOneBy(["nom" => "cabassut"]); // TODO: à changer pour récupérer l'utilisateur connecté
         $creerSortieForm = $this->createForm(CreerSortieType::class, $sortie);
 
         $creerSortieForm->handleRequest($request);
 
+        if ($creerSortieForm->get('enregistrer')->isClicked()) {
+            $sortie->setEtat($etats[0]);
+        }elseif ($creerSortieForm->get('publier')->isClicked()){
+            $sortie->setEtat(($etats[1]));
+        }
+
         if ($creerSortieForm->isSubmitted() && $creerSortieForm->isValid()){
-            $sortie->setEtat($etatCree);
             $sortie->setParticipantOrganisateur($participantConnecte);
             $entityManager->persist($sortie);
             $entityManager->flush();
