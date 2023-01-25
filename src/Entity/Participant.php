@@ -42,7 +42,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="Vous devez renseigner un nom")
-     * @Assert\Length(min=2,max=255,minMessage="Votre nom doit comporter 2 caractères minimum",maxMessage="Le nom doit pas dépasser 255 caractères")
+     * @Assert\Length(min=5,max=255,minMessage="Votre nom doit comporter 5 caractères minimum",maxMessage="Le nom doit pas dépasser 255 caractères")
      */
     private $nom;
 
@@ -61,6 +61,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="Vous devez renseigner un mail")
      * @Assert\Email(message="Ce mail n'est pas valide")
      */
     private $mail;
@@ -107,7 +108,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->pseudonyme;
     }
 
-    public function setPseudonyme(string $pseudonyme): self
+    public function setPseudonyme(string $pseudonyme = null): self
     {
         $this->pseudonyme = $pseudonyme;
 
@@ -159,7 +160,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password = null): self
     {
         $this->password = $password;
 
@@ -191,7 +192,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->nom;
     }
 
-    public function setNom(string $nom): self
+    public function setNom(string $nom = null): self
     {
         $this->nom = $nom;
 
@@ -203,7 +204,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->prenom;
     }
 
-    public function setPrenom(string $prenom): self
+    public function setPrenom(string $prenom = null): self
     {
         $this->prenom = $prenom;
 
@@ -227,7 +228,7 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->mail;
     }
 
-    public function setMail(string $mail): self
+    public function setMail(string $mail = null): self
     {
         $this->mail = $mail;
 

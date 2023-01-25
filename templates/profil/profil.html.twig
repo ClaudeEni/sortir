@@ -27,7 +27,7 @@
         {{form_widget(ParticipantForm) }}
         <a href="{{ path('modif_mdp',{'id':participant.id}) }}">Modifier mon mot de passe</a>
         <p style="text-align: center">
-            <a href="{{ path('home') }}"><button name="bouton" value="Enregistrer">Enregistrer</button></a>
+            <a href="{{ path('home') }}"><button class="btn btn-lg btn-primary" name="bouton" value="Enregistrer">Enregistrer</button></a>
             <a href="{{ path('home') }}"><button name="bouton" value="Annuler">Annuler</button></a>
         </p>
         {{form_end(ParticipantForm) }}
