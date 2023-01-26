@@ -16,7 +16,7 @@
 
     {{ form_start(searchForm) }}
 
-    <div>Campus {{ form_widget(searchForm.campus) }}</div>
+    <div>Campus {{ form_widget(searchForm.campus) }} </div>
     <div> Le nom de la sortie contient {{ form_widget(searchForm.nom) }} </div>
     <div>Entre {{ form_widget(searchForm.dateDebut) }} et {{ form_widget(searchForm.dateFin) }} </div>
     <div> {{ form_widget(searchForm.sortieOrganisateur) }} Sorties dont je suis l'organisateur/trice</div>
@@ -73,7 +73,7 @@
                             <a href="">S'inscrire</a>
                         {% endif %}
                         {% if sortie.participantOrganisateur == user %}
-                            <a href="">Annuler</a>
+                            <a  href="{{ path('sorties_annulerSortie',{'id':sortie.id}) }}">Annuler</a>
                         {% endif %}
                     {% endif %}
                     {% if sortie.etat.libelle=='Clôturée' %}
