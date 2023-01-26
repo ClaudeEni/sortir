@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Etat;
 use App\Entity\Sortie;
 use App\Form\CreerSortieType;
+use App\Form\ModifierSortieType;
 use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
@@ -61,22 +62,33 @@ class SortiesController extends AbstractController
     }
 
     /**
-     * @Route("/sorties/modifierSortie", name="sorties_modifierSortie")
+     * @Route("/sorties/modifierSortie/{id}", name="sorties_modifierSortie", requirements={"id"="\d+"})
      */
-    public function modifierSortie(Request $request, EntityManagerInterface $entityManager, SortieRepository $sortieRepository, int $id): Response
+    public function modifierSortie(Request $request, EntityManagerInterface $entityManager, SortieRepository $sortieRepository, EtatRepository $etatRepository, int $id): Response
     {
         $sortie = $sortieRepository->find($id);
+        $user =$this->getUser();
         $etat = $sortie->getEtat()->getLibelle();
+        $etatCreee = $etatRepository->findOneBy(["libelle"=>"Créée"]);
+        $etatOuverte = $etatRepository->findOneBy(["libelle"=>"Ouverte"]);
         $organisateur = $sortie->getParticipantOrganisateur() === $this->getUser();
 
         if ($organisateur && $sortie != null && $etat == "Créée"){
-            $modifierSortieForm = $this->createForm(CreerSortieType::class, $sortie);
+            $modifierSortieForm = $this->createForm(ModifierSortieType::class, $sortie);
             $modifierSortieForm->handleRequest($request);
+
+            if ($modifierSortieForm->get('enregistrer')->isClicked()) {
+                $sortie->setEtat($etatCreee);
+                $message = 'Votre sortie a été créée avec succès';
+            }elseif ($modifierSortieForm->get('publier')->isClicked()){
+                $sortie->setEtat($etatOuverte);
+                $message = 'Votre sortie a été publiée avec succès';
+            }
 
             if ($modifierSortieForm->isSubmitted() and $modifierSortieForm->isValid() ) {
                 $entityManager->persist($sortie);
                 $entityManager->flush();
-                $this->addFlash('success', 'La sortie a bien été modifiée.');
+                $this->addFlash('success', $message);
                 return $this->redirectToRoute('home');
             }
         }else{
@@ -85,6 +97,7 @@ class SortiesController extends AbstractController
         }
 
         return $this->render('sorties/modifierSortie.html.twig', [
+            "user" => $user,
             "modifierSortieForm" => $modifierSortieForm->createView()
         ]);
     }
