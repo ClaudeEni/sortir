@@ -100,9 +100,9 @@
 
 
         <p style="text-align: center">
-            <a href="{{ path('home') }}"><button class="btn btn-primary" name="bouton"
+            <a href="{{ path('sorties_list') }}"><button class="btn btn-primary" name="bouton"
                     value="Enregistrer">Enregistrer</button></a>
-            <a href="{{ path('home') }}"><button name="bouton" class="btn btn-secondary" value="Annuler">Annuler</button></a>
+            <a href="{{ path('sorties_list') }}"><button name="bouton" class="btn btn-secondary" value="Annuler">Annuler</button></a>
         </p>
         <a class="link-secondary" href="{{ path('modif_mdp',{'id':participant.id}) }}">Modifier mon mot de passe</a>
         {{form_end(ParticipantForm) }}

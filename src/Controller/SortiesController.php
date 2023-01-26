@@ -8,6 +8,7 @@ use App\Entity\Sortie;
 use App\Form\CreerSortieType;
 use App\Form\SearchType;
 use App\Model\Search;
+use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -70,7 +71,7 @@ class SortiesController extends AbstractController
             $entityManager->persist($sortie);
             $entityManager->flush();
             $this->addflash('success', $message);
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('sorties_list');
         }
 
         return $this->render('sorties/creerSortie.html.twig', [

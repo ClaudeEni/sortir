@@ -46,7 +46,7 @@ class ProfilController extends AbstractController
             $entityManager->persist($participant);
             $entityManager->flush();
 
-            return $this->redirectToRoute('home',[]);
+            return $this->redirectToRoute('sorties_list',[]);
         }
 
         // si le participant est celui connecté, on affiche son profil pour modification
@@ -83,7 +83,7 @@ class ProfilController extends AbstractController
             $entityManager->persist($participant);
             $entityManager->flush();
 
-            return $this->redirectToRoute('home',[]);
+            return $this->redirectToRoute('sorties_list',[]);
         }
 
         return $this->render('profil/ModifMdp.html.twig', [
