@@ -30,7 +30,7 @@
     <table>
         <tr>
             <th>Nom de la sortie</th>
-            <th>Campus</th>
+{#            <th>Campus</th>#}
             <th>Date la sortie</th>
             <th>Clôture</th>
             <th>Inscrits/places</th>
@@ -42,37 +42,51 @@
         {% for sortie in sorties %}
             <tr>
                 <td>{{sortie.nom}}</td>
-                <td>{{ sortie.campus.nom }}</td>
+{#                <td>{{ sortie.campus.nom }}</td>#}
                 <td>{{ sortie.dateHeureDebut|date("d/m/Y H:II") }}</td>
                 <td>{{ sortie.dateLimiteInscription|date("d/m/Y") }}</td>
                 <td>{{ sortie.participants.count}}/{{ sortie.nbInscriptionsMax}}</td>
                 <td>{{ sortie.etat.libelle }}</td>
                 <td>
                     {% for participant in sortie.participants %}
-                        {% if participant == user %}
+                        {% if participant == app.user %}
                             X
                         {% endif %}
                     {% endfor %}
                 </td>
                 <td>{{ sortie.participantOrganisateur.nom }}</td>
                 <td>
+                    {# L'organisateur peut Modifier/publier/supprimer#}
                     {% if sortie.etat.libelle=='Créée' %}
-                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a> <a href="{{ path('sorties_modifierSortie', {id:sortie.id}) }}">Modifier</a>
+                        {% if sortie.participantOrganisateur == user %}
+                            <a href="">Modifier</a> <a href="">Publier</a> <a href="">Supprimer</a>
+                        {% else %}
+                            <a href="">Afficher</a>
+                        {% endif %}
                     {% endif %}
+                    {# Si inscrit, on peut se désinscrire sinon on peut s'inscrire si la date limite n'est pas passée et qu'il reste de la place #}
                     {% if sortie.etat.libelle=='Ouverte' %}
-                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a>
+                        <a href="">Afficher</a>
+                        {% if sortie.participants.contains(app.user) %}
+                            <a href="">Se désister</a>
+                        {% elseif 'now'|date('d/m/Y')<=(sortie.dateLimiteInscription|date('d/m/Y')) and sortie.participants.count < sortie.nbInscriptionsMax %}
+                            <a href="">S'inscrire</a>
+                        {% endif %}
+                        {% if sortie.participantOrganisateur == user %}
+                            <a href="">Annuler</a>
+                        {% endif %}
                     {% endif %}
                     {% if sortie.etat.libelle=='Clôturée' %}
-                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a>
+                        <a href="">Afficher</a>
+                        {% if sortie.participantOrganisateur == user %}
+                            <a href="">Annuler</a>
+                        {% endif %}
                     {% endif %}
                     {% if sortie.etat.libelle=='En cours' %}
-                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a>
+                        <a href="">Afficher</a>
                     {% endif %}
-                    {% if sortie.etat.libelle=='Passée' %}
-                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a>
-                    {% endif %}
-                    {% if sortie.etat.libelle=='Annulée' %}
-                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a>
+                    {% if sortie.etat.libelle=='Passée' or sortie.etat.libelle=='Annulée' %}
+                        <a href="">Afficher</a>
                     {% endif %}
                 </td>
             </tr>

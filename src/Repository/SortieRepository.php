@@ -68,6 +68,9 @@ class SortieRepository extends ServiceEntityRepository
     public function findSortiesWithFilter(Search $search, Participant $participant) : array
     {
         $queryBuilder = $this->createQueryBuilder('s');
+//            ne pas prendre les sorties terminées depuis plus de 30 jours, on les garde en historique mais pas en visu
+            $queryBuilder
+                ->andWhere('date_add(s.dateHeureDebut,30,\'DAY\')> current_Date()');
             if ($search->getNom()){
                 $queryBuilder
                     ->andWhere('s.nom like :val')
