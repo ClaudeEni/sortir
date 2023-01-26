@@ -13,6 +13,15 @@
 <body>
     {% if app.request.get('_route') is not same as "app_login" %}{{ include('includes/navbar.html.twig')}}{% endif %}
 
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
     {% block body %}{% endblock %}
+
 </body>
 </html>

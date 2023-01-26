@@ -49,7 +49,7 @@ class SortiesController extends AbstractController
             $entityManager->persist($sortie);
             $entityManager->flush();
             $this->addflash('success', $message);
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('home');
         }
 
         return $this->render('sorties/creerSortie.html.twig', [
