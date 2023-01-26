@@ -32,16 +32,17 @@ class SortiesController extends AbstractController
         $user =$this->getUser();
         $sortie->setParticipantOrganisateur($user);
         $sortie->setCampus($user->getCampus());
-        $etats = $etatRepository ->findAll();
+        $etatCreee = $etatRepository->findOneBy(["libelle"=>"Créée"]);
+        $etatOuverte = $etatRepository->findOneBy(["libelle"=>"Ouverte"]);
         $creerSortieForm = $this->createForm(CreerSortieType::class, $sortie);
 
         $creerSortieForm->handleRequest($request);
 
         if ($creerSortieForm->get('enregistrer')->isClicked()) {
-            $sortie->setEtat($etats[0]);
+            $sortie->setEtat($etatCreee);
             $message = 'Votre sortie a été créée avec succès';
         }elseif ($creerSortieForm->get('publier')->isClicked()){
-            $sortie->setEtat(($etats[1]));
+            $sortie->setEtat($etatOuverte);
             $message = 'Votre sortie a été publiée avec succès';
         }
 
