@@ -11,6 +11,7 @@ use App\Model\Search;
 use App\Form\ModifierSortieType;
 use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
+use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -108,11 +109,11 @@ class SortiesController extends AbstractController
                 $entityManager->persist($sortie);
                 $entityManager->flush();
                 $this->addFlash('success', $message);
-                return $this->redirectToRoute('home');
+                return $this->redirectToRoute('sorties_list');
             }
         }else{
             $this->addFlash('error','Vous ne pouvez pas modifier cette sortie.');
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('sorties_list');
         }
 
         return $this->render('sorties/modifierSortie.html.twig', [

@@ -57,22 +57,22 @@
                 <td>{{ sortie.participantOrganisateur.nom }}</td>
                 <td>
                     {% if sortie.etat.libelle=='Créée' %}
-                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a> <a href="">Modifier</a>
+                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a> <a href="{{ path('sorties_modifierSortie', {id:sortie.id}) }}">Modifier</a>
                     {% endif %}
                     {% if sortie.etat.libelle=='Ouverte' %}
-                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a> <a href="">Modifier</a>
+                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a>
                     {% endif %}
                     {% if sortie.etat.libelle=='Clôturée' %}
-                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a> <a href="">Modifier</a>
+                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a>
                     {% endif %}
                     {% if sortie.etat.libelle=='En cours' %}
-                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a> <a href="">Modifier</a>
+                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a>
                     {% endif %}
                     {% if sortie.etat.libelle=='Passée' %}
-                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a> <a href="">Modifier</a>
+                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a>
                     {% endif %}
                     {% if sortie.etat.libelle=='Annulée' %}
-                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a> <a href="">Modifier</a>
+                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a>
                     {% endif %}
                 </td>
             </tr>
