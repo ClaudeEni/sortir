@@ -25,9 +25,8 @@ class SortiesController extends AbstractController
     {
 
         // TODO : récupérer le participant connecté
-        $participant = new Participant();
-        // A Supprimer après avoir récupéré la fenêtre de connexion
-        $participant = $participantRepository->loadUserByIdentifier("JMO");
+        $participant = $this->getUser();
+        //$participant = $participantRepository->loadUserByIdentifier($this"JMO");
 
         $search = new Search();
         $search->setCampus($participant->getCampus());
