@@ -4,19 +4,26 @@ namespace App\Model;
 
 use App\Entity\Campus;
 use DateTimeInterface;
-use Symfony\Config\TwigExtra\StringConfig;
 
 class Search
 {
     private ?String $nom = null;
-
-    private $sortiePassee = false;
 
     private ?Campus $campus = null;
 
     private ?DateTimeInterface $dateDebut = null;
 
     private ?DateTimeInterface $dateFin = null;
+
+    private $sortiePassee = false;
+
+    private $sortieOrganisateur = false;
+
+    private $sortieInscrit = false;
+
+    private $sortiePasInscrit = false;
+
+
 
     /**
      * @return mixed
@@ -34,10 +41,10 @@ class Search
         $this->nom = $nom;
     }
 
-    public function __toString() : String
-    {
-        return "";
-    }
+//    public function __toString() : String
+//    {
+//        return "";
+//    }
 
     /**
      * @return bool
@@ -54,6 +61,7 @@ class Search
     {
         $this->sortiePassee = $sortiePassee;
     }
+
 
     /**
      * @return Campus
@@ -101,5 +109,53 @@ class Search
     public function setDateFin(?DateTimeInterface $dateFin): void
     {
         $this->dateFin = $dateFin;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSortieOrganisateur(): bool
+    {
+        return $this->sortieOrganisateur;
+    }
+
+    /**
+     * @param bool $sortieOrganisateur
+     */
+    public function setSortieOrganisateur(bool $sortieOrganisateur): void
+    {
+        $this->sortieOrganisateur = $sortieOrganisateur;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSortieInscrit(): bool
+    {
+        return $this->sortieInscrit;
+    }
+
+    /**
+     * @param bool $sortieInscrit
+     */
+    public function setSortieInscrit(bool $sortieInscrit): void
+    {
+        $this->sortieInscrit = $sortieInscrit;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSortiePasInscrit(): bool
+    {
+        return $this->sortiePasInscrit;
+    }
+
+    /**
+     * @param bool $sortiePasInscrit
+     */
+    public function setSortiePasInscrit(bool $sortiePasInscrit): void
+    {
+        $this->sortiePasInscrit = $sortiePasInscrit;
     }
 }

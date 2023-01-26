@@ -20,12 +20,15 @@ class SearchType extends AbstractType
                 'class'=>Campus::class,
                 'choice_label'=>'nom'
             ])
-            ->add('nom',TextType::class, ['label'=>'Le nom de la sortie contient', 'required'=>false])
+            ->add('nom',TextType::class)
 //            ->add('dateDebut',DateType::class,['label'=>'Entre','required'=>'false'])
 //            ->add('dateFin',TextType::class,['label'=>'et','format'=>'d-M-yyyy','required'=>'false'])
             ->add('dateDebut',DateType::class,['label'=>'Entre','widget'=>'single_text','format'=>'yyyy-MM-dd','required'=>'false'])
             ->add('dateFin',DateType::class,['label'=>'et','widget'=>'single_text','format'=>'yyyy-MM-dd','required'=>'false'])
-            ->add('sortiePassee',CheckboxType::class, ['label'=>'Sortie passée', 'required'=>false])
+            ->add('sortieOrganisateur',CheckboxType::class)
+            ->add('sortieInscrit',CheckboxType::class)
+            ->add('sortiePasInscrit',CheckboxType::class)
+            ->add('sortiePassee',CheckboxType::class)
 
         ;
     }
