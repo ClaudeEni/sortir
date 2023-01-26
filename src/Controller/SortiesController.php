@@ -24,27 +24,36 @@ class SortiesController extends AbstractController
     }
 
     /**
-     * @Route("/sorties/creerSortie", name="/sorties_creerSortie")
+     * @Route("/sorties/creerSortie", name="sorties_creerSortie")
      */
     public function creerSortie(Request $request, EntityManagerInterface $entityManager, EtatRepository $etatRepository, ParticipantRepository $participantRepository): Response
     {
         $sortie = new Sortie();
-        $etatCree = $etatRepository->findOneBy(["libelle" => "Créée"]); // TODO: Les BDD de tous les utilisateurs doivent posséder les mêmes libellés d'états
-        $participantConnecte = $participantRepository->findOneBy(["nom" => "cabassut"]); // TODO: à changer pour récupérer l'utilisateur connecté
+        $user =$this->getUser();
+        $sortie->setParticipantOrganisateur($user);
+        $sortie->setCampus($user->getCampus());
+        $etats = $etatRepository ->findAll();
         $creerSortieForm = $this->createForm(CreerSortieType::class, $sortie);
 
         $creerSortieForm->handleRequest($request);
 
+        if ($creerSortieForm->get('enregistrer')->isClicked()) {
+            $sortie->setEtat($etats[0]);
+            $message = 'Votre sortie a été créée avec succès';
+        }elseif ($creerSortieForm->get('publier')->isClicked()){
+            $sortie->setEtat(($etats[1]));
+            $message = 'Votre sortie a été publiée avec succès';
+        }
+
         if ($creerSortieForm->isSubmitted() && $creerSortieForm->isValid()){
-            $sortie->setEtat($etatCree);
-            $sortie->setParticipantOrganisateur($participantConnecte);
             $entityManager->persist($sortie);
             $entityManager->flush();
-            $this->addflash('success','Votre sortie a été créée avec succès');
+            $this->addflash('success', $message);
             return $this->redirectToRoute('app_home');
         }
 
         return $this->render('sorties/creerSortie.html.twig', [
+            "user" => $user,
             "creerSortieForm" => $creerSortieForm->createView()
         ]);
     }
