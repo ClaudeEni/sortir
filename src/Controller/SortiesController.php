@@ -121,5 +121,30 @@ class SortiesController extends AbstractController
             "modifierSortieForm" => $modifierSortieForm->createView()
         ]);
     }
+
+    /**
+     * @Route("/sorties/supprimerSortie/{id}", name="sorties_supprimerSortie", requirements={"id"="\d+"})
+     */
+    public function supprimerSortie(Request $request, EntityManagerInterface $entityManager, SortieRepository $sortieRepository, EtatRepository $etatRepository, int $id): Response
+    {
+        $sortie = $sortieRepository->find($id);
+        $organisateur = $sortie->getParticipantOrganisateur() === $this->getUser();
+        $etat = $sortie->getEtat()->getLibelle();
+
+        if ($organisateur && $etat == "Créée"){
+            if (!$sortie) {
+                $this->addFlash('error','Vous ne pouvez pas supprimer cette sortie.');
+                return $this->redirectToRoute('sorties_list');
+            }else{
+                $entityManager->remove($sortie);
+                $entityManager->flush();
+                $this->addFlash('success','Votre sortie a été supprimée avec succès.');
+                return $this->redirectToRoute('sorties_list');
+            }
+        }
+
+        return $this->redirectToRoute('sorties_list');
+    }
+
 }
 
