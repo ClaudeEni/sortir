@@ -1,10 +1,82 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-LIST
+{% block title %}
+    Sortie entre élèves
 {% endblock %}
 
-{% block title %}
+{% block body %}
+    <h3>Filtrer les sorties</h3>
+    {#    {{ form_start(searchForm) }}#}
+    {#    {{ form_widget(searchForm) }}#}
+    {#        <button>Rechercher</button>#}
+    {#    {{ form_end(searchForm) }}#}
 
+    {# on utiliser form_widget pour ne mettre que le champ de la classe #}
+    {# form_row met aussi le label #}
+
+    {{ form_start(searchForm) }}
+
+    <div>Campus {{ form_widget(searchForm.campus) }}</div>
+    <div> Le nom de la sortie contient {{ form_widget(searchForm.nom) }} </div>
+    <div>Entre {{ form_widget(searchForm.dateDebut) }} et {{ form_widget(searchForm.dateFin) }} </div>
+    <div> {{ form_widget(searchForm.sortieOrganisateur) }} Sorties dont je suis l'organisateur/trice</div>
+    <div> {{ form_widget(searchForm.sortieInscrit) }} Sorties auxquelles je suis inscrit/e </div>
+    <div> {{ form_widget(searchForm.sortiePasInscrit) }} Sorties auxquelles je ne suis pas inscrit/e </div>
+    <div> {{ form_widget(searchForm.sortiePassee) }} Sorties passées </div>
+    <button>Rechercher</button>
+    {{ form_end(searchForm) }}
+
+    <br>
+    <table>
+        <tr>
+            <th>Nom de la sortie</th>
+            <th>Campus</th>
+            <th>Date la sortie</th>
+            <th>Clôture</th>
+            <th>Inscrits/places</th>
+            <th>Etat</th>
+            <th>Inscrit</th>
+            <th>Organisateur</th>
+            <th>Actions</th>
+        </tr>
+        {% for sortie in sorties %}
+            <tr>
+                <td>{{sortie.nom}}</td>
+                <td>{{ sortie.campus.nom }}</td>
+                <td>{{ sortie.dateHeureDebut|date("d/m/Y H:II") }}</td>
+                <td>{{ sortie.dateLimiteInscription|date("d/m/Y") }}</td>
+                <td>{{ sortie.participants.count}}/{{ sortie.nbInscriptionsMax}}</td>
+                <td>{{ sortie.etat.libelle }}</td>
+                <td>
+                    {% for participant in sortie.participants %}
+                        {% if participant == user %}
+                            X
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ sortie.participantOrganisateur.nom }}</td>
+                <td>
+                    {% if sortie.etat.libelle=='Créée' %}
+                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a> <a href="">Modifier</a>
+                    {% endif %}
+                    {% if sortie.etat.libelle=='Ouverte' %}
+                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a> <a href="">Modifier</a>
+                    {% endif %}
+                    {% if sortie.etat.libelle=='Clôturée' %}
+                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a> <a href="">Modifier</a>
+                    {% endif %}
+                    {% if sortie.etat.libelle=='En cours' %}
+                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a> <a href="">Modifier</a>
+                    {% endif %}
+                    {% if sortie.etat.libelle=='Passée' %}
+                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a> <a href="">Modifier</a>
+                    {% endif %}
+                    {% if sortie.etat.libelle=='Annulée' %}
+                        <a href="">Afficher</a> <a href="">Se désister</a> <a href="">S'inscrire</a> <a href="">Publier</a> <a href="">Modifier</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
 {% endblock %}
 
