@@ -29,30 +29,31 @@ class SortiesController extends AbstractController
     public function creerSortie(Request $request, EntityManagerInterface $entityManager, EtatRepository $etatRepository, ParticipantRepository $participantRepository): Response
     {
         $sortie = new Sortie();
-        //$user =$this->getUser();
-        //$sortie->setParticipantOrganisateur($user);
-        //$sortie->setCampus($user->getCampus());
+        $user =$this->getUser();
+        $sortie->setParticipantOrganisateur($user);
+        $sortie->setCampus($user->getCampus());
         $etats = $etatRepository ->findAll();
-        $participantConnecte = $participantRepository->findOneBy(["nom" => "cabassut"]); // TODO: à changer pour récupérer l'utilisateur connecté
         $creerSortieForm = $this->createForm(CreerSortieType::class, $sortie);
 
         $creerSortieForm->handleRequest($request);
 
         if ($creerSortieForm->get('enregistrer')->isClicked()) {
             $sortie->setEtat($etats[0]);
+            $message = 'Votre sortie a été créée avec succès';
         }elseif ($creerSortieForm->get('publier')->isClicked()){
             $sortie->setEtat(($etats[1]));
+            $message = 'Votre sortie a été publiée avec succès';
         }
 
         if ($creerSortieForm->isSubmitted() && $creerSortieForm->isValid()){
-            $sortie->setParticipantOrganisateur($participantConnecte);
             $entityManager->persist($sortie);
             $entityManager->flush();
-            $this->addflash('success','Votre sortie a été créée avec succès');
+            $this->addflash('success', $message);
             return $this->redirectToRoute('app_home');
         }
 
         return $this->render('sorties/creerSortie.html.twig', [
+            "user" => $user,
             "creerSortieForm" => $creerSortieForm->createView()
         ]);
     }

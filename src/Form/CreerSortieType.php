@@ -29,10 +29,9 @@ class CreerSortieType extends AbstractType
             ->add('nbInscriptionsMax', IntegerType::class, ['label'=>'Nombre de places'])
             ->add('duree', IntegerType::class, ['label'=>'Durée'])
             ->add('infosSortie', TextareaType::class, ['label'=>'Description et infos'])
-            ->add('campus', EntityType::class, ['label'=>'Campus', 'class'=>Campus::class])
+            //->add('campus', EntityType::class, ['label'=>'Campus', 'class'=>Campus::class])
             ->add('ville', EntityType::class, ['label'=>'Ville', 'class'=>Ville::class, 'choice_label'=>'nom', 'mapped'=>false])
             ->add('lieu', EntityType::class, ['label'=>'Lieu', 'class'=>Lieu::class, 'choice_label'=>'nom'])
-            ->add('participantOrganisateur', EntityType::class, ['label'=>'Organisateur', 'class'=>Participant::class, 'choice_label'=>'nom']) // TODO: à enlever dès que je récupère le user connecté
             //->add('rue', EntityType::class, ['label'=>'Rue', 'class'=>'App\Entity\Lieu', 'choice_label'=>'rue']) TODO: les 4 champs suivants doivent être gérés en front et seront affichés après avoir sélectionné le lieu
             //->add('codePostal', TextType::class, ['label'=>'Code postal'])
             //->add('latitude', TextType::class, ['label'=>'Latitude'])
