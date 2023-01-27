@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block body %}
-<main class="form-custom w-100 m-auto text-center">
+<main class="form-custom form w-100 m-auto text-center">
 {# si on visualise le profil d'un autre participant #}
     {% if app.user != participant %}
         <h1 class="h3 mb-3 fw-normal">{{participant.pseudonyme}}</h1>

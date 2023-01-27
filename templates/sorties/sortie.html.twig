@@ -1,0 +1,80 @@
+﻿{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ sortie.nom }}
+{% endblock %}
+
+{% block stylesheets %}
+    <link href="../../assets/styles/form-custom.css" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<main class="form-custom form-double w-100 m-auto text-center">
+        <h1 class="h3 mb-3 fw-normal">{{sortie.nom}}</h1>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" placeholder="" value="{{ sortie.nom }}" disabled/>
+                        <label>Nom</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="text" class="form-control" placeholder="" value="{{ sortie.dateHeureDebut.format('d/m/Y') }}" disabled/>
+                        <label>Date et heure de la sortie</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="text" class="form-control" placeholder="" value="{{ '%s minutes'|format(sortie.duree) }}" disabled/>
+                        <label>Durée</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="text" class="form-control" placeholder="" value="{{ sortie.dateLimiteInscription.format('d/m/Y') }}" disabled/>
+                        <label>Date limite d'inscription</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="text" class="form-control" placeholder="" value="{{ '%s/%s'|format(sortie.participants|length, sortie.nbInscriptionsMax ) }}" disabled/>
+                        <label>Nombre de places</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="text" class="form-control" placeholder="" value="{{ '%s, %s, %s'|format(sortie.lieu.rue, sortie.lieu.ville.codepostal, sortie.lieu.ville.nom) }}" disabled/>
+                        <label>Lieu</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="text" class="form-control" placeholder="" value="{{ '%s, %s'|format(sortie.lieu.latitude, sortie.lieu.longitude) }}" disabled/>
+                        <label>Latitude et longitude</label>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" placeholder="" value="{{ sortie.campus.nom }}" disabled/>
+                        <label>Campus</label>
+                    </div>
+                    <div class="form-floating">
+                        <textArea type="text" class="form-control" placeholder="" disabled>{{sortie.infosSortie}}</textArea>
+                        <label>Informations</label>
+                    </div>
+                    <div class="participants table-responsive">
+                        <h5 class="m-0 p-0">Participants</h5>
+                        <table class="table border m-0 p-0 rounded">
+                        <thead>
+                            <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Pseudo</th>
+                            <th scope="col">Nom</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key, participant in sortie.participants %}
+                                {% if participant == app.user %}
+                                    <tr>
+                                        <th scope="row">{{ key +1 }}</th>
+                                        <td scope="row">{{ participant.pseudonyme }}</td>
+                                        <td scope="row">{{ '%s %s'|format(participant.prenom, participant.nom|upper)}}</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+</main>
+{% endblock %}
