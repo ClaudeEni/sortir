@@ -121,5 +121,23 @@ class SortiesController extends AbstractController
             "modifierSortieForm" => $modifierSortieForm->createView()
         ]);
     }
+
+         /**
+     * @Route("/sorties/{id}", name="sorties_afficher")
+     */
+    public function afficherSortie($id,
+                                   SortieRepository $sortieRepository,
+                                   EntityManagerInterface $entityManager): Response
+    {
+        $sortie = $sortieRepository->find($id);
+        
+        if (!$sortie){
+            throw $this->createNotFoundException('Cette sortie n\'existe pas !');
+        }
+
+        return $this->render('sorties/sortie.html.twig', [
+            "sortie"=>$sortie
+        ]);
+    }
 }
 

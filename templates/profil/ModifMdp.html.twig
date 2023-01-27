@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block body %}
-<main class="form-custom w-100 m-auto text-center">
+<main class="form-custom form w-100 m-auto text-center">
     {{form_start(ParticipantForm) }}
             <h1 class="h3 mb-3 fw-normal">Modification du mot de passe de {{ participant.pseudonyme }}</h1>
             {% if form_errors(ParticipantForm.password.first) %}
