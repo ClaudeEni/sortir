@@ -188,6 +188,81 @@ class SortiesController extends AbstractController
 
     }
 
+    /**
+     * @Route ("sorties/inscrire/{id}",name="sortie_inscription_sortie")
+     */
+    public function inscriptionSortie($id,
+                                    SortieRepository $sortieRepository,
+                                    EtatRepository $etatRepository,
+                                    EntityManagerInterface $entityManager,
+                                    Request $request) : Response
+    {
+
+        $sortie = $sortieRepository->find($id);
+        $etatOuverte = $etatRepository->findOneBy(['libelle' => 'Ouverte']);
+        $etatCloturee = $etatRepository->findOneBy(['libelle' => 'Clôturée']);
+        if (!$sortie) {
+            throw $this->createNotFoundException('Cette sortie n\'est pas valide !');
+        }
+
+        // on ne peut s'inscrire si la sortie est ouverte
+        if ($sortie->getEtat() != $etatOuverte) {
+            $message = "La sortie " . $sortie->getNom() . " n\'est pas ouverte, l\'inscription n\'est pas possible";
+            $this->addflash('success', $message);
+        } // et avec de la place
+        elseif ($sortie->getParticipants()->count() == $sortie->getNbInscriptionsMax()) {
+            $message = "Le nombre maximum d\'inscrit est atteint, l\'inscription à la sortie " . $sortie->getNom() . "n\'est pas possible";
+            $this->addflash('success', $message);
+        } // inscription possible
+        else {
+            $sortie->addParticipant($this->getUser());
+            $entityManager->persist($sortie);
+            $entityManager->flush();
+
+            // si le nombre max de participant est atteint, on cloture la sortie
+            $sortie = $sortieRepository->find($id);
+            if ($sortie->getNbInscriptionsMax()==$sortie->getParticipants()->count()){
+                $sortie->setEtat($etatCloturee);
+                $entityManager->persist($sortie);
+                $entityManager->flush();
+            }
+        };
+        return $this->redirectToRoute('sorties_list');
+    }
+
+    /**
+     * @Route ("sorties/sedesister/{id}",name="sortie_sedesister")
+     */
+    public function seDesisterSortie($id, SortieRepository $sortieRepository,
+                                        EtatRepository $etatRepository,
+                                        EntityManagerInterface $entityManager) : Response {
+        $sortie = $sortieRepository->find($id);
+        $etatOuverte = $etatRepository->findOneBy(['libelle' => 'Ouverte']);
+        $etatCloture = $etatRepository->findOneBy(['libelle' => 'Clôturée']);
+        if (!$sortie) {
+            throw $this->createNotFoundException('Cette sortie n\'est pas valide !');
+        }
+        // on ne peut se désinscrire que si la sortie est ouverte
+        if ($sortie->getEtat() != $etatOuverte and $sortie->getEtat() != $etatCloture) {
+            $message = "La sortie " . $sortie->getNom() . " n\'est ni ouverte ni clôturée, la désinscription n\'est pas possible";
+            $this->addflash('success', $message);
+        }
+        else{
+            $sortie->removeParticipant($this->getUser());
+            $entityManager->persist($sortie);
+            $entityManager->flush();
+
+            // si le nombre max de participant n'est pas atteint, on met la sortie Ouverte
+            $sortie = $sortieRepository->find($id);
+            if ($sortie->getNbInscriptionsMax()>$sortie->getParticipants()->count()){
+                $sortie->setEtat($etatOuverte);
+                $entityManager->persist($sortie);
+                $entityManager->flush();
+            }
+
+        }
+        return $this->redirectToRoute('sorties_list');
+    }
 
 }
 

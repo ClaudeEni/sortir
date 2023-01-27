@@ -69,24 +69,24 @@
                     {% if sortie.etat.libelle=='Ouverte' %}
                         <a href="">Afficher</a>
                         {% if sortie.participants.contains(app.user) %}
-                            <a href="">Se désister</a>
-                        {% elseif 'now'|date('d/m/Y')<=(sortie.dateLimiteInscription|date('d/m/Y')) and sortie.participants.count < sortie.nbInscriptionsMax %}
-                            <a href="">S'inscrire</a>
+                            <a href="{{ path('sortie_sedesister',{'id':sortie.id}) }}">Se désister</a>
+                        {% elseif ('now'|date('Y/m/d')<=(sortie.dateLimiteInscription|date('Y/m/d')) and sortie.participants.count < sortie.nbInscriptionsMax) %}
+                            <a href="{{ path('sortie_inscription_sortie',{'id':sortie.id}) }}">S'inscrire</a>
                         {% endif %}
                         {% if sortie.participantOrganisateur == user %}
                             <a  href="{{ path('sorties_annulerSortie',{'id':sortie.id}) }}">Annuler</a>
                         {% endif %}
                     {% endif %}
-                    {% if sortie.etat.libelle=='Clôturée' %}
+                    {% if sortie.etat.libelle=='Clôturée'%}
                         <a href="">Afficher</a>
+                        {% if sortie.participants.contains(app.user) and 'now'|date('Y/m/d')<=(sortie.dateLimiteInscription|date('Y/m/d')) %}
+                            <a href="{{ path('sortie_sedesister',{'id':sortie.id}) }}">Se désister</a>
+                        {% endif %}
                         {% if sortie.participantOrganisateur == user %}
                             <a href="">Annuler</a>
                         {% endif %}
                     {% endif %}
-                    {% if sortie.etat.libelle=='En cours' %}
-                        <a href="">Afficher</a>
-                    {% endif %}
-                    {% if sortie.etat.libelle=='Passée' or sortie.etat.libelle=='Annulée' %}
+                    {% if sortie.etat.libelle=='En cours' or sortie.etat.libelle=='Passée' or sortie.etat.libelle=='Annulée' %}
                         <a href="">Afficher</a>
                     {% endif %}
                 </td>
