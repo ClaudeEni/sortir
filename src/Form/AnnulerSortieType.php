@@ -19,9 +19,9 @@ class AnnulerSortieType extends AbstractType
             ->add('infosSortie')
             // Bouton "Annuler"
             ->add('save', SubmitType::class, [
-                'label' => 'Enregistrer',
+                'label' => 'Annuler la sortie',
                 'attr' => [
-                    'class'          => 'btn btn-primary'
+                    'class'          => 'btn btn-danger'
                 ]
             ])
             ->add('cancel', SubmitType::class, [
