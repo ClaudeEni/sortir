@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Etat;
 use App\Entity\Participant;
 use App\Entity\Sortie;
+use App\Form\AnnulerSortieType;
 use App\Form\CreerSortieType;
 use App\Form\SearchType;
 use App\Model\Search;
@@ -17,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use function PHPUnit\Framework\throwException;
 
 class SortiesController extends AbstractController
 {
@@ -25,8 +27,6 @@ class SortiesController extends AbstractController
      */
     public function sorties_list(ParticipantRepository $participantRepository, SortieRepository $sortieRepository, Request $request): Response
     {
-
-        // TODO : récupérer le participant connecté
         $participant = $this->getUser();
         //$participant = $participantRepository->loadUserByIdentifier($this"JMO");
 
@@ -145,6 +145,49 @@ class SortiesController extends AbstractController
 
         return $this->redirectToRoute('sorties_list');
     }
+
+
+    /**
+     * @Route("/sorties/annulerSortie/{id}", name="sorties_annulerSortie", requirements={"id"="\d+"})
+     */
+    public function annulerSortie($id,
+                                  Request $request,
+                                  EntityManagerInterface $entityManager,
+                                  SortieRepository $sortieRepository,
+                                  EtatRepository $etatRepository,
+                                  AnnulerSortieType $annulerSortieType): Response
+    {
+        $sortie = $sortieRepository->find($id);
+
+        if (!$sortie){
+            throw $this->createNotFoundException('Cette sortie n\'est pas valide !');
+        }
+
+        $annulerSortieForm = $this->createForm(AnnulerSortieType::class,$sortie);
+        $annulerSortieForm->handleRequest($request);
+
+        if($annulerSortieForm->isSubmitted() && $annulerSortieForm->isValid()){
+            if ($annulerSortieForm->get('save')->isClicked()){
+                //récupérarion de l'état "Annulée" pour le mettre à la sortie
+                $etatAnnulee = $etatRepository->findOneBy(["libelle"=>"Annulée"]);
+                $sortie->setEtat($etatAnnulee);
+
+                $entityManager->persist($sortie);
+                $entityManager->flush();
+
+                $message="La sortie ".$sortie->getNom()." a bien été annulée avec succès";
+                $this->addflash('success', $message);
+            }
+            return $this->redirectToRoute('sorties_list');
+        }
+
+        return $this->render('sorties/annulerSortie.html.twig',[
+            'sortie'=>$sortie,
+            'annulerSortieForm'=>$annulerSortieForm->createView()
+        ]);
+
+    }
+
 
 }
 
