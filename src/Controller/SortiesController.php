@@ -8,6 +8,7 @@ use App\Entity\Sortie;
 use App\Form\AnnulerSortieType;
 use App\Form\CreerSortieType;
 use App\Form\SearchType;
+use App\Form\SupprimerSortieType;
 use App\Model\Search;
 use App\Form\ModifierSortieType;
 use App\Repository\EtatRepository;
@@ -118,6 +119,7 @@ class SortiesController extends AbstractController
 
         return $this->render('sorties/modifierSortie.html.twig', [
             "user" => $user,
+            'sortie'=>$sortie,
             "modifierSortieForm" => $modifierSortieForm->createView()
         ]);
     }
@@ -128,22 +130,27 @@ class SortiesController extends AbstractController
     public function supprimerSortie(Request $request, EntityManagerInterface $entityManager, SortieRepository $sortieRepository, EtatRepository $etatRepository, int $id): Response
     {
         $sortie = $sortieRepository->find($id);
-        $organisateur = $sortie->getParticipantOrganisateur() === $this->getUser();
-        $etat = $sortie->getEtat()->getLibelle();
-
-        if ($organisateur && $etat == "Créée"){
-            if (!$sortie) {
-                $this->addFlash('error','Vous ne pouvez pas supprimer cette sortie.');
-                return $this->redirectToRoute('sorties_list');
-            }else{
-                $entityManager->remove($sortie);
-                $entityManager->flush();
-                $this->addFlash('success','Votre sortie a été supprimée avec succès.');
-                return $this->redirectToRoute('sorties_list');
-            }
+        if (!$sortie){
+            $this->addFlash('error', 'Vous ne pouvez pas supprimer cette sortie.');
+            return $this->redirectToRoute('sorties_list');
         }
 
-        return $this->redirectToRoute('sorties_list');
+        $supprimerSortieForm = $this->createForm(SupprimerSortieType::class, $sortie);
+        $supprimerSortieForm->handleRequest($request);
+
+        if($supprimerSortieForm->isSubmitted() && $supprimerSortieForm->isValid()) {
+            if ($supprimerSortieForm->get('supprimer')->isClicked()) {
+                $entityManager->remove($sortie);
+                $entityManager->flush();
+                $this->addFlash('success', 'Votre sortie a été supprimée avec succès.');
+            }
+            return $this->redirectToRoute('sorties_list');
+        }
+
+        return $this->render('sorties/supprimerSortie.html.twig',[
+            'sortie'=>$sortie,
+            'supprimerSortieForm'=>$supprimerSortieForm->createView()
+        ]);
     }
 
 
