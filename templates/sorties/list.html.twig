@@ -62,12 +62,12 @@
                         {% if sortie.participantOrganisateur == user %}
                             <a href="{{ path('sorties_modifierSortie', {id:sortie.id}) }}">Modifier</a> <a href="{{ path('sorties_publierSortie', {id:sortie.id}) }}">Publier</a> <a href="{{ path('sorties_supprimerSortie', {id:sortie.id}) }}">Supprimer</a>
                         {% else %}
-                            <a href="">Afficher</a>
+                            <a href="{{ path('sorties_afficherSortie', {id:sortie.id}) }}">Afficher</a>
                         {% endif %}
                     {% endif %}
                     {# Si inscrit, on peut se désinscrire sinon on peut s'inscrire si la date limite n'est pas passée et qu'il reste de la place #}
                     {% if sortie.etat.libelle=='Ouverte' %}
-                        <a href="">Afficher</a>
+                        <a href="{{ path('sorties_afficherSortie', {id:sortie.id}) }}">Afficher</a>
                         {% if sortie.participants.contains(app.user) %}
                             <a href="{{ path('sortie_sedesister',{'id':sortie.id}) }}">Se désister</a>
                         {% elseif ('now'|date('Y/m/d')<=(sortie.dateLimiteInscription|date('Y/m/d')) and sortie.participants.count < sortie.nbInscriptionsMax) %}
@@ -78,7 +78,7 @@
                         {% endif %}
                     {% endif %}
                     {% if sortie.etat.libelle=='Clôturée'%}
-                        <a href="">Afficher</a>
+                        <a href="{{ path('sorties_afficherSortie', {id:sortie.id}) }}">Afficher</a>
                         {% if sortie.participants.contains(app.user) and 'now'|date('Y/m/d')<=(sortie.dateLimiteInscription|date('Y/m/d')) %}
                             <a href="{{ path('sortie_sedesister',{'id':sortie.id}) }}">Se désister</a>
                         {% endif %}
@@ -87,7 +87,7 @@
                         {% endif %}
                     {% endif %}
                     {% if sortie.etat.libelle=='En cours' or sortie.etat.libelle=='Passée' or sortie.etat.libelle=='Annulée' %}
-                        <a href="">Afficher</a>
+                        <a href="{{ path('sorties_afficherSortie', {id:sortie.id}) }}">Afficher</a>
                     {% endif %}
                 </td>
             </tr>

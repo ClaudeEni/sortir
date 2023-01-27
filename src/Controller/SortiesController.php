@@ -316,7 +316,7 @@ class SortiesController extends AbstractController
 
 
          /**
-     * @Route("/sorties/{id}", name="sorties_afficher")
+     * @Route("/sorties/afficherSortie/{id}", name="sorties_afficherSortie")
      */
     public function afficherSortie($id,
                                    SortieRepository $sortieRepository,
