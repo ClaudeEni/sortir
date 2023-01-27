@@ -54,7 +54,8 @@
                         {% endif %}
                     {% endfor %}
                 </td>
-                <td>{{ sortie.participantOrganisateur.nom }}</td>
+                <td><a href="{{ path('profil_afficher',{ 'id': sortie.participantOrganisateur.id }) }}">{{ sortie.participantOrganisateur.pseudonyme }}</a></td>
+{#                <a href="{{ path('wish_delete',{'id':w.id})}} ">Supprimer le souhait</a></p>#}
                 <td>
                     {# L'organisateur peut Modifier/publier/supprimer#}
                     {% if sortie.etat.libelle=='Créée' %}
@@ -92,5 +93,8 @@
             </tr>
         {% endfor %}
     </table>
+
+    <a href="{{ path('sorties_creerSortie') }}" class="btn btn-primary">Créer une sortie</a>
+
 {% endblock %}
 
