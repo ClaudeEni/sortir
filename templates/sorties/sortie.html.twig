@@ -59,7 +59,7 @@
                             <tr>
                             <th scope="col">#</th>
                             <th scope="col">Pseudo</th>
-                            <th scope="col">Prénom</th>
+                            <th scope="col">Nom</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -68,7 +68,7 @@
                                     <tr>
                                         <th scope="row">{{ key +1 }}</th>
                                         <td scope="row">{{ participant.pseudonyme }}</td>
-                                        <td scope="row">{{ participant.nom }}</td>
+                                        <td scope="row">{{ '%s %s'|format(participant.prenom, participant.nom|upper)}}</td>
                                     </tr>
                                 {% endif %}
                             {% endfor %}
