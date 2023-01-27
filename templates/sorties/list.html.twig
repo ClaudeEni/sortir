@@ -60,7 +60,7 @@
                     {# L'organisateur peut Modifier/publier/supprimer#}
                     {% if sortie.etat.libelle=='Créée' %}
                         {% if sortie.participantOrganisateur == user %}
-                            <a href="{{ path('sorties_modifierSortie', {id:sortie.id}) }}">Modifier</a> <a href="">Publier</a> <a href="{{ path('sorties_supprimerSortie', {id:sortie.id}) }}" onclick="return confirm('Cliquez sur OK pour supprimer cette sortie')">Supprimer</a>
+                            <a href="{{ path('sorties_modifierSortie', {id:sortie.id}) }}">Modifier</a> <a href="">Publier</a> <a href="{{ path('sorties_supprimerSortie', {id:sortie.id}) }}">Supprimer</a>
                         {% else %}
                             <a href="">Afficher</a>
                         {% endif %}
