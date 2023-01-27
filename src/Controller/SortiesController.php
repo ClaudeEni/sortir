@@ -7,6 +7,7 @@ use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\AnnulerSortieType;
 use App\Form\CreerSortieType;
+use App\Form\PublierSortieType;
 use App\Form\SearchType;
 use App\Form\SupprimerSortieType;
 use App\Model\Search;
@@ -191,6 +192,48 @@ class SortiesController extends AbstractController
         return $this->render('sorties/annulerSortie.html.twig',[
             'sortie'=>$sortie,
             'annulerSortieForm'=>$annulerSortieForm->createView()
+        ]);
+
+    }
+
+    /**
+     * @Route("/sorties/publierSortie/{id}", name="sorties_publierSortie", requirements={"id"="\d+"})
+     */
+    public function publierSortie($id,
+                                  Request $request,
+                                  EntityManagerInterface $entityManager,
+                                  SortieRepository $sortieRepository,
+                                  EtatRepository $etatRepository,
+                                  AnnulerSortieType $annulerSortieType): Response
+    {
+        $sortie = $sortieRepository->find($id);
+
+        if (!$sortie){
+            $this->addFlash('error', 'Vous ne pouvez pas publier cette sortie.');
+            return $this->redirectToRoute('sorties_list');
+        }
+
+        $publierSortieForm = $this->createForm(PublierSortieType::class,$sortie);
+        $publierSortieForm->handleRequest($request);
+
+        if($publierSortieForm->isSubmitted() && $publierSortieForm->isValid()){
+            if ($publierSortieForm->get('publier')->isClicked()){
+                //récupérarion de l'état "Ouverte" pour le mettre à la sortie
+                $etatOuverte = $etatRepository->findOneBy(["libelle"=>"Ouverte"]);
+                $sortie->setEtat($etatOuverte);
+
+                $entityManager->persist($sortie);
+                $entityManager->flush();
+
+                $message="La sortie ".$sortie->getNom()." a été publiée avec succès";
+                $this->addflash('success', $message);
+            }
+            return $this->redirectToRoute('sorties_list');
+        }
+
+        return $this->render('sorties/publierSortie.html.twig',[
+            'sortie'=>$sortie,
+            'publierSortieForm'=>$publierSortieForm->createView()
         ]);
 
     }
