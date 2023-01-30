@@ -65,10 +65,10 @@ class SortieRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-    public function findSortiesWithFilter(Search $search, Participant $participant) : array
+    public function findSortiesWithFilter(Search $search, Participant $participant, EtatRepository $etatRepository) : array
     {
         $queryBuilder = $this->createQueryBuilder('s');
-//            ne pas prendre les sorties terminées depuis plus de 30 jours, on les garde en historique mais pas en visu
+//            ne pas prendre les sorties passées ou annulée depuis plus de 30 jours, on les garde en historique mais pas en visu
             $queryBuilder
                 ->andWhere('date_add(s.dateHeureDebut,30,\'DAY\')> current_Date()');
             if ($search->getNom()){
@@ -93,10 +93,6 @@ class SortieRepository extends ServiceEntityRepository
                     ->setParameter('dateFin', $search->getDateFin());
 
             }
-            if ($search->isSortiePassee()){
-                $queryBuilder
-                    ->andWhere('s.dateHeureDebut < current_Date()');
-            }
             if($search->isSortieOrganisateur()){
                 $queryBuilder
                     ->andWhere('s.participantOrganisateur=:organisateur')
@@ -111,6 +107,18 @@ class SortieRepository extends ServiceEntityRepository
                 $queryBuilder
                     ->andWhere(':participant NOT MEMBER OF s.participants')
                     ->setParameter('participant',$participant->getId());
+            }
+            $etatPassee  = $etatRepository->findOneBy(['libelle'=>'Passée']);
+            if ($search->isSortiePassee()){
+                $queryBuilder
+                    ->andWhere('s.etat = :etat')
+                    ->setParameter('etat',$etatPassee);
+            }
+            else{
+                $queryBuilder
+                    ->andWhere('s.etat != :etat')
+                    ->setParameter('etat',$etatPassee);
+
             }
 //            ->andWhere('s.nom like :val')
 //            ->setParameter('val', "%".$lib."%")

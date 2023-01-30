@@ -25,14 +25,14 @@ class Sortie
     private $nom;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $dateHeureDebut;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $duree;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $dateHeureDebut;
 
     /**
      * @ORM\Column(type="date")
