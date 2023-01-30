@@ -92,7 +92,6 @@
 
             ville.addEventListener("change", function (){
                 let form = this.closest("form");
-                console.log(form);
                 let data = this.name + "=" + this.value;
 
                 fetch(form.action, {
