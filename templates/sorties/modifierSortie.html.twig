@@ -1,86 +1,87 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
+{% endblock %}
 
+{% block stylesheets %}
+    <link href="../../assets/styles/creer-sortie.css" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
-    <div>
-        <h2>Modifier une sortie :</h2>
+    <main class="form-custom form w-100 m-auto text-center" style="padding-bottom: 30px">
+        <h2>Modifier une sortie :</h2><br>
 
         {{ form_start(modifierSortieForm) }}
 
         <div>
-            <label for="sortie_nom" class="input-group-text">Nom de la sortie :</label>
-            {{ form_widget(modifierSortieForm.nom) }}
+            <label for="sortie_nom">Nom de la sortie :</label>
+            {{ form_widget(modifierSortieForm.nom, {'attr': {'class': 'input-group-text w-25 m-auto text-center'}}) }}
             {{ form_errors(modifierSortieForm.nom) }}
-        </div>
+        </div><br>
 
         <div>
-            <label for="sortie_dateHeureDebut" class="input-group-text">Date et heure de la sortie :</label>
-            {{ form_widget(modifierSortieForm.dateHeureDebut) }}
+            <label for="sortie_dateHeureDebut">Date et heure de la sortie :</label>
+            {{ form_widget(modifierSortieForm.dateHeureDebut, {'attr': {'class': 'input-group-text w-25 m-auto text-center'}}) }}
             {{ form_errors(modifierSortieForm.dateHeureDebut) }}
-        </div>
+        </div><br>
 
         <div>
-            <label for="sortie_dateLimiteInscription" class="input-group-text">Date limite d'inscription :</label>
-            {{ form_widget(modifierSortieForm.dateLimiteInscription) }}
+            <label for="sortie_dateLimiteInscription">Date limite d'inscription :</label>
+            {{ form_widget(modifierSortieForm.dateLimiteInscription, {'attr': {'class': 'input-group-text w-25 m-auto text-center'}}) }}
             {{ form_errors(modifierSortieForm.dateLimiteInscription) }}
-        </div>
+        </div><br>
 
         <div>
-            <label for="sortie_nbInscriptionsMax" class="input-group-text">Nombre de places :</label>
-            {{ form_widget(modifierSortieForm.nbInscriptionsMax) }}
+            <label for="sortie_nbInscriptionsMax">Nombre de places :</label>
+            {{ form_widget(modifierSortieForm.nbInscriptionsMax, {'attr': {'class': 'input-group-text w-25 m-auto text-center'}}) }}
             {{ form_errors(modifierSortieForm.nbInscriptionsMax) }}
-        </div>
+        </div><br>
 
         <div>
-            <label for="sortie_duree" class="input-group-text">Durée de la sortie :</label>
-            {{ form_widget(modifierSortieForm.duree) }}
+            <label for="sortie_duree">Durée de la sortie :</label>
+            {{ form_widget(modifierSortieForm.duree, {'attr': {'class': 'input-group-text w-25 m-auto text-center'}}) }}
             {{ form_errors(modifierSortieForm.duree) }}
-        </div>
+        </div><br>
 
         <div>
-            <label for="sortie_infosSortie" class="input-group-text">Description et informations :</label>
-            {{ form_widget(modifierSortieForm.infosSortie) }}
+            <label for="sortie_infosSortie">Description et informations :</label>
+            {{ form_widget(modifierSortieForm.infosSortie, {'attr': {'class': 'input-group-text w-25 m-auto text-center'}}) }}
             {{ form_errors(modifierSortieForm.infosSortie) }}
-        </div>
+        </div><br>
 
         <div>
-            <label for="sortie_campus" class="input-group-text">Campus :</label>
-            {{ user.campus }}
+            <label for="sortie_campus">Campus :</label>
+            <div style="font-weight: bold">{{ user.campus }}</div>
 
-        </div>
+        </div><br>
 
         <div>
-            <label for="sortie_ville" class="input-group-text">Ville :</label>
-            {{ form_widget(modifierSortieForm.ville) }}
+            <label for="sortie_ville">Ville :</label>
+            {{ form_widget(modifierSortieForm.ville, {'attr': {'class': 'input-group-text w-25 m-auto text-center'}}) }}
             {{ form_errors(modifierSortieForm.ville) }}
-        </div>
+        </div><br>
 
         <div>
-            <label for="sortie_lieu" class="input-group-text">Lieu :</label>
-            {{ form_widget(modifierSortieForm.lieu) }}
+            <label for="sortie_lieu">Lieu :</label>
+            {{ form_widget(modifierSortieForm.lieu, {'attr': {'class': 'input-group-text w-25 m-auto text-center'}}) }}
             {{ form_errors(modifierSortieForm.lieu) }}
         </div>
 
-        <div>
-            {{ form_widget(modifierSortieForm.enregistrer) }}
-        </div>
 
-        <div>
-            {{ form_widget(modifierSortieForm.publier) }}
-        </div>
 
-        <div>
-            <a href="{{ path('sorties_supprimerSortie', {id:sortie.id}) }}" class="btn btn-danger">Supprimer la sortie</a>
-        </div>
+        <br><br>
 
-        <div>
-            <a href="{{path('sorties_list')}}" class="btn btn-secondary">Annuler</a>
-        </div>
+            <div>
+                {{ form_widget(modifierSortieForm.enregistrer, {'attr': {'class': 'btn btn-success'}}) }}
 
-        {{ form_end(modifierSortieForm) }}
+                {{ form_widget(modifierSortieForm.publier, {'attr': {'class': 'btn btn-primary'}}) }}
 
-    </div>
+                <a href="{{ path('sorties_supprimerSortie', {id:sortie.id}) }}" class="btn btn-danger">Supprimer la sortie</a>
+
+                <a href="{{path('sorties_list')}}" class="btn btn-warning">Annuler</a>
+            </div>
+
+            {{ form_end(modifierSortieForm) }}
+
+    </main>
 {% endblock %}

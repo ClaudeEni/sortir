@@ -24,8 +24,8 @@ class CreerSortieType extends AbstractType
     {
         $builder
             ->add('nom', TextType::class, ['label'=>'Nom de la sortie'])
-            ->add('dateHeureDebut', DateType::class, ['label'=>'Date et heure de la sortie'])
-            ->add('dateLimiteInscription', DateType::class, ['label'=>'Date limite d\'inscription'])
+            ->add('dateHeureDebut', DateType::class, ['label'=>'Date et heure de la sortie', 'widget'=>'single_text', 'format'=>'yyyy-MM-dd'])
+            ->add('dateLimiteInscription', DateType::class, ['label'=>'Date limite d\'inscription', 'widget'=>'single_text', 'format'=>'yyyy-MM-dd'])
             ->add('nbInscriptionsMax', IntegerType::class, ['label'=>'Nombre de places'])
             ->add('duree', IntegerType::class, ['label'=>'Durée'])
             ->add('infosSortie', TextareaType::class, ['label'=>'Description et infos'])
