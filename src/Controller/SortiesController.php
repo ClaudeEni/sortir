@@ -15,6 +15,7 @@ use App\Form\ModifierSortieType;
 use App\Repository\EtatRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
+use App\Services\majEtat;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,8 +28,16 @@ class SortiesController extends AbstractController
     /**
      * @Route("/sorties/list", name="sorties_list")
      */
-    public function sorties_list(ParticipantRepository $participantRepository, SortieRepository $sortieRepository, Request $request): Response
+    public function sorties_list(ParticipantRepository $participantRepository,
+                                 SortieRepository $sortieRepository,
+                                 Request $request,
+                                 EtatRepository $etatRepository,
+                                 EntityManagerInterface $entityManager,
+                                 majEtat $majEtat): Response
     {
+
+        $majEtat->maj($entityManager, $sortieRepository, $etatRepository);
+
         $participant = $this->getUser();
         //$participant = $participantRepository->loadUserByIdentifier($this"JMO");
 
@@ -38,7 +47,7 @@ class SortiesController extends AbstractController
         $searchForm = $this->createForm(SearchType::class,$search);
         $searchForm->handleRequest($request);
 
-        $sorties = $sortieRepository->findSortiesWithFilter($search,$participant);
+        $sorties = $sortieRepository->findSortiesWithFilter($search,$participant,$etatRepository);
 
         return $this->render('sorties/list.html.twig',[
             'sorties'=>$sorties,
