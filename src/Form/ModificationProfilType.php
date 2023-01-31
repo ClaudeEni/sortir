@@ -42,9 +42,9 @@ class ModificationProfilType extends AbstractType
                     new File([
                         'maxSize' => '1M',
                         'mimeTypes' => [
-                            'image/jpg',
+                            'image/png',
                         ],
-                        'mimeTypesMessage' => "Le format n'est pas en jpg ou supérieur à 1Mo",
+                        'mimeTypesMessage' => "Le format n'est pas en png ou supérieur à 1Mo",
                     ])
                 ],
             ])
