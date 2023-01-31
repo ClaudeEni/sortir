@@ -18,13 +18,19 @@
     {# on utiliser form_widget pour ne mettre que le champ de la classe #}
     {# form_row met aussi le label #}
 
-    {{ form_start(searchForm) }}
+    <main class="form-custom w-100 " style="padding-bottom: 30px">
 
-    <h5>Filtrer les sorties</h5>
+        <div style="margin: 10px">
+            <h5>Filtrer les sorties</h5>
+        </div>
+
+
     <div class="filtre">
+        {{ form_start(searchForm) }}
         <div class="container">
-          <div class="filreSortie column">
-            <div class="col-sm">
+          <div class="filtreRow">
+{#              <div class="col-sm">#}
+              <div>
                 <div class="form-floating">
 {#                    Campus {{ form_widget(searchForm.campus) }}#}
                         {{form_widget(searchForm.campus, { 'attr': {'class': 'form-control', 'placeholder': "Campus"} }) }}
@@ -36,16 +42,26 @@
                     <label>Le nom de la sortie contient</label>
                 </div>
 {#                <div>Entre {{ form_widget(searchForm.dateDebut) }} et {{ form_widget(searchForm.dateFin) }} </div>#}
-                <div class="form-floating">
-                    {{ form_widget(searchForm.dateDebut, { 'attr': {'class': 'form-control', 'placeholder': "Entre le"} }) }}
-                    <label>Entre le</label>
-                </div>
-                <div class="form-floating">
-                    {{ form_widget(searchForm.dateFin, { 'attr': {'class': 'form-control', 'placeholder': "et le"} }) }}
-                    <label>et le</label>
+{#                <div class="form-floating">#}
+{#                    {{ form_widget(searchForm.dateDebut, { 'attr': {'class': 'form-control', 'placeholder': "Entre le"} }) }}#}
+{#                    <label>Entre le</label>#}
+{#                </div>#}
+{#                <div class="form-floating">#}
+{#                    {{ form_widget(searchForm.dateFin, { 'attr': {'class': 'form-control', 'placeholder': "et le"} }) }}#}
+{#                    <label>et le</label>#}
+{#                </div>#}
+                <div class="filtreRowDate">
+                    <div class="form-floating">
+                        {{ form_widget(searchForm.dateDebut, { 'attr': {'class': 'form-control', 'placeholder': "Entre le"} }) }}
+                        <label>Entre le</label>
+                    </div>
+                    <div class="form-floating">
+                        {{ form_widget(searchForm.dateFin, { 'attr': {'class': 'form-control', 'placeholder': "et le"} }) }}
+                        <label>et le</label>
+                    </div>
                 </div>
             </div>
-            <div class="col-sm" >
+            <div class="col-sm" style="padding-left: 15px" >
 {#                <div> {{ form_widget(searchForm.sortieOrganisateur) }} Sorties dont je suis l'organisateur/trice</div>#}
 {#                <div> {{ form_widget(searchForm.sortieInscrit) }} Sorties auxquelles je suis inscrit/e </div>#}
 {#                <div> {{ form_widget(searchForm.sortiePasInscrit) }} Sorties auxquelles je ne suis pas inscrit/e </div>#}
@@ -74,14 +90,15 @@
             <div class="col-sm">
                 <button class="btn btn-secondary btn-lg" style="width: 200px">Rechercher</button>
             </div>
+          </div>
         </div>
+            {{ form_end(searchForm) }}
     </div>
-    {{ form_end(searchForm) }}
 
-
-    <main>
+{#    <main>#}
 {#    <main class="form-custom form w-100 m-auto text-center" style="padding-bottom: 30px">#}
-    <div class="sorties table-responsive column">
+        {#    <div class="sorties table-responsive column">#}
+    <div class="sorties">
         <table class="table border m-10 p-10 rounded">
             <tr>
                 <th scope="col">Nom de la sortie</th>
@@ -98,16 +115,16 @@
                     <td >{{sortie.nom}}</td>
                     <td>{{ sortie.dateHeureDebut|date("d/m/Y H:II") }}</td>
                     <td>{{ sortie.dateLimiteInscription|date("d/m/Y") }}</td>
-                    <td>{{ sortie.participants.count}}/{{ sortie.nbInscriptionsMax}}</td>
+                    <td  style="text-align: center">{{ sortie.participants.count}}/{{ sortie.nbInscriptionsMax}}</td>
                     <td>{{ sortie.etat.libelle }}</td>
-                    <td>
+                    <td  style="text-align: center">
                         {% for participant in sortie.participants %}
                             {% if participant == app.user %}
                                 X
                             {% endif %}
                         {% endfor %}
                     </td>
-                    <td><a href="{{ path('profil_afficher',{ 'id': sortie.participantOrganisateur.id }) }}">{{ sortie.participantOrganisateur.pseudonyme }}</a></td>
+                    <td  style="text-align: center"><a href="{{ path('profil_afficher',{ 'id': sortie.participantOrganisateur.id }) }}">{{ sortie.participantOrganisateur.pseudonyme }}</a></td>
     {#                <a href="{{ path('wish_delete',{'id':w.id})}} ">Supprimer le souhait</a></p>#}
                     <td style="text-align: left">
                         {# L'organisateur peut Modifier/publier/supprimer#}
