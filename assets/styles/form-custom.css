@@ -42,6 +42,46 @@ body {
   background-color: var(--bs-form-control-disabled-bg);
 }
 
+.filtre {
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+  /*max-height: 172px !important;*/
+  /*height: 172px !important;*/
+  height: auto;
+}
+
+.filtreRow{
+  display: flex;
+  flex-direction: row;
+  flex: auto;
+  margin-bottom: 20px;
+}
+
+.filtreRowDate{
+  display: flex;
+  flex-direction: row;
+  flex: auto;
+  /*justify-content: center;*/
+  /*align-content: stretch;*/
+  /*flex-grow:10;*/
+  margin-bottom: 20px;
+}
+
+.sorties{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.sorties table {
+  align-items: center;
+  display: block;
+  overflow-y: auto;
+  overflow-x: auto;
+  height: 100%;
+  background-color: var(--bs-form-control-disabled-bg);
+}
+
+
 textarea {
   height: 115px !important;
   font-size: small !important;
