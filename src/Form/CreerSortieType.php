@@ -61,6 +61,14 @@ class CreerSortieType extends AbstractType
                 $formModifier($event->getForm()->getParent(), $ville);
             }
         );
+
+        $builder->get('ville')->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($formModifier){
+                $ville = $event->getForm()->getData();
+                $formModifier($event->getForm()->getParent(), $ville);
+            }
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void
