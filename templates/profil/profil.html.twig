@@ -45,7 +45,7 @@
         {{form_start(ParticipantForm) }}
             <h1 class="h3 mb-3 fw-normal">Mon profil</h1>
             <div class="input-group mb-3">
-                <img class="avatar rounded mb-1" src="{{ asset('uploads/avatars/' ~ participant.id ~ ".jpg") }}"
+                <img class="avatar rounded mb-1" src="{{ asset('uploads/avatars/' ~ participant.id ~ ".png") }}"
                 onerror="this.src='../../assets/img/no_img.png'" ></img>
                 {{ form_widget(ParticipantForm.avatar) }}
                 {% if form_errors(ParticipantForm.avatar) %}
