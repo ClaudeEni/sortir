@@ -96,7 +96,8 @@ textarea {
 }
 
 .avatar {
-  width:140px !important;
+  width: 100px !important;
+  max-height: 200px;
   margin: auto;
 }
 
