@@ -42,6 +42,32 @@ body {
   background-color: var(--bs-form-control-disabled-bg);
 }
 
+.filtre {
+  display: flex;
+  flex-direction: column;
+  margin-top: 57px;
+  max-height: 172px !important;
+  height: 172px !important;
+}
+
+.filreSortie{
+  display: flex;
+  flex-direction: row;
+  flex: auto;
+  margin-bottom: 57px;
+}
+
+.sorties table {
+  align-items: center;
+  display: block;
+  overflow-y: auto;
+  height: 100%;
+  background-color: var(--bs-form-control-disabled-bg);
+  /*margin-left: 10px;*/
+
+}
+
+
 textarea {
   height: 115px !important;
   font-size: small !important;
