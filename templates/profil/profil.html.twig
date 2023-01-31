@@ -13,7 +13,7 @@
 {# si on visualise le profil d'un autre participant #}
     {% if app.user != participant %}
         <h1 class="h3 mb-3 fw-normal">{{participant.pseudonyme}}</h1>
-            <img class="avatar rounded mb-1" src="{{ asset('uploads/avatars/' ~ participant.id ~ ".jpg") }}"
+            <img class="avatar rounded mb-1" src="{{ asset('uploads/avatars/' ~ participant.id ~ ".png") }}"
                 onerror="this.src='../../assets/img/no_img.png'" ></img>
             <div class="form-floating">
                 <input type="text" class="form-control" placeholder="Pseudonyme" value={{ participant.pseudonyme }} disabled/>
