@@ -135,6 +135,12 @@ textarea {
   }
 }
 
+.avatar {
+  width: 100px !important;
+  max-height: 200px;
+  margin: auto;
+}
+
 .b-example-divider {
   height: 3rem;
   background-color: rgba(0, 0, 0, .1);

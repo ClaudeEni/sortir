@@ -7,10 +7,12 @@ use App\Form\ModificationProfilType;
 use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ProfilController extends AbstractController
 {
@@ -30,6 +32,7 @@ class ProfilController extends AbstractController
     public function afficherProfil($id,
                                    Request $request,
                                    ParticipantRepository $participantRepository,
+                                   SluggerInterface $slugger,
                                    EntityManagerInterface $entityManager): Response
     {
         $participant = $participantRepository->find($id);
@@ -43,6 +46,20 @@ class ProfilController extends AbstractController
         $modificationProfilForm->handleRequest($request);
 
         if($modificationProfilForm->isSubmitted() && $modificationProfilForm->isValid()){
+            // upload the avatar file
+            $avatarFile = $modificationProfilForm->get('avatar')->getData();
+            if ($avatarFile) {
+                // Move the file to the directory where avatars are stored
+                try {
+                    $avatarFile->move(
+                        $this->getParameter('avatar_directory'),
+                        $participant->getId().'.'.$avatarFile->guessExtension()
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+            }
+            
             $entityManager->persist($participant);
             $entityManager->flush();
 
