@@ -95,6 +95,11 @@ textarea {
   }
 }
 
+.avatar {
+  width:140px !important;
+  margin: auto;
+}
+
 .b-example-divider {
   height: 3rem;
   background-color: rgba(0, 0, 0, .1);
