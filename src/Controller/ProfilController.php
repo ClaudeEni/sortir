@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Participant;
+use App\Form\CreerParticipantType;
 use App\Form\ModificationProfilMDPType;
 use App\Form\ModificationProfilType;
 use App\Repository\ParticipantRepository;
@@ -12,19 +14,51 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ProfilController extends AbstractController
 {
+//    /**
+//     * @Route("/", name="home")
+//     */
+//    public function home(): Response
+//    {
+//        return $this->render('profil/index.html.twig', [
+//            'controller_name' => 'ProfilController',
+//        ]);
+//    }
+
     /**
-     * @Route("/", name="home")
+     * @Route("/profil/nouveau",name="nouveau_profil")
      */
-    public function home(): Response
-    {
-        return $this->render('profil/index.html.twig', [
-            'controller_name' => 'ProfilController',
+    public function nouveauProfil(Request $request,
+                                  UserPasswordHasherInterface $passwordHasher,
+                                  EntityManagerInterface $entityManager) : Response {
+        $participant = new Participant();
+        dump($participant);
+
+        // création du formulaire pour saisie des informations
+        $nouveauProfil = $this->createForm(CreerParticipantType::class, $participant);
+        $nouveauProfil->handleRequest($request);
+
+        if ($nouveauProfil->isSubmitted() and $nouveauProfil->isValid()) {
+            $participant->setActif(true);
+            $participant->setPassword(
+                $passwordHasher->hashPassword($participant, $nouveauProfil->get('password')->getData())
+            );
+            $entityManager->persist($participant);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('sorties_list',[]);
+        }
+
+        return $this->render('profil/CreerProfil.html.twig', [
+            "participant" => $participant,
+            "participantForm" => $nouveauProfil->createView()
         ]);
     }
+
 
     /**
      * @Route("/profil/{id}", name="profil_afficher")
@@ -59,7 +93,7 @@ class ProfilController extends AbstractController
                     // ... handle exception if something happens during file upload
                 }
             }
-            
+
             $entityManager->persist($participant);
             $entityManager->flush();
 
@@ -108,5 +142,7 @@ class ProfilController extends AbstractController
             "ParticipantForm"=>$modificationMdpForm->createView()
         ]);
     }
+
+
 }
 

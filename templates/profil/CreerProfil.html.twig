@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block stylesheets %}
+    <link href="../../assets/styles/form-custom.css" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+
+<main class="form-custom form w-100 m-auto text-center">
+    {{form_start(participantForm) }}
+    <h1 class="h3 mb-3 fw-normal">Nouvel utilisateur</h1>
+    <div class="form-floating">
+        {{form_widget(participantForm.pseudonyme, { 'attr': {'class': 'form-control', 'placeholder': "Pseudonyme"} }) }}
+        <label for={{participantForm.pseudonyme.vars.id}}>Pseudonyme</label>
+        {% if form_errors(participantForm.pseudonyme) %}
+            <div class="alert alert-danger mb-0" role="alert">
+                {{ form_errors(participantForm.pseudonyme) }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="form-floating">
+        {{form_widget(participantForm.nom, { 'attr': {'class': 'form-control', 'placeholder': "Nom"} }) }}
+        <label for={{participantForm.nom.vars.id}}>Nom</label>
+        {% if form_errors(participantForm.nom) %}
+            <div class="alert alert-danger mb-0" role="alert">
+                {{ form_errors(participantForm.nom) }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="form-floating">
+        {{form_widget(participantForm.prenom, { 'attr': {'class': 'form-control', 'placeholder': "Prénom"} }) }}
+        <label for={{participantForm.prenom.vars.id}}>Prénom</label>
+        {% if form_errors(participantForm.prenom) %}
+            <div class="alert alert-danger mb-0" role="alert">
+                {{ form_errors(participantForm.prenom) }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="form-floating">
+        {{form_widget(participantForm.telephone, { 'attr': {'class': 'form-control', 'placeholder': "Téléphone"} }) }}
+        <label for={{participantForm.telephone.vars.id}}>Téléphone</label>
+        {% if form_errors(participantForm.telephone) %}
+            <div class="alert alert-danger mb-0" role="alert">
+                {{ form_errors(participantForm.telephone) }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="form-floating">
+        {{form_widget(participantForm.mail, { 'attr': {'class': 'form-control', 'placeholder': "Mail"} }) }}
+        <label for={{participantForm.mail.vars.id}}>Mail</label>
+        {% if form_errors(participantForm.mail) %}
+            <div class="alert alert-danger mb-0" role="alert">
+                {{ form_errors(participantForm.mail) }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="form-floating">
+        {{form_widget(participantForm.campus, { 'attr': {'class': 'form-control', 'placeholder': "Campus"} }) }}
+        <label for={{participantForm.campus.vars.id}}>Campus</label>
+        {% if form_errors(participantForm.campus) %}
+            <div class="alert alert-danger mb-0" role="alert">
+                {{ form_errors(participantForm.campus) }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="form-floating">
+        {{form_widget(participantForm.password, { 'attr': {'class': 'form-control', 'placeholder': "Password"} }) }}
+        <label for={{participantForm.password.vars.id}}>Mot de passe</label>
+        {% if form_errors(participantForm.password) %}
+            <div class="alert alert-danger mb-0" role="alert">
+                {{ form_errors(participantForm.password) }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="form-check" style="height: 30px; width: 400px">
+        <input class="form-check-input" type="checkbox" id="admin" value={{ form_widget(participantForm.administrateur) }}
+        <label class="form-check-label" for="admin">Administrateur</label>
+    </div>
+
+    {{ form_rest(participantForm) }}
+
+    <p style="text-align: center">
+        <a href="{{ path('sorties_list') }}"><button class="btn btn-primary" name="bouton" value="Enregistrer">Enregistrer</button></a>
+        <a href="{{path('sorties_list')}}" class="btn btn-warning">Annuler</a>
+    </p>
+    {{form_end(participantForm) }}
+</main>
+{% endblock %}
+

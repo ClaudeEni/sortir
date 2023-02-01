@@ -25,6 +25,8 @@ use function PHPUnit\Framework\throwException;
 
 class SortiesController extends AbstractController
 {
+
+
     /**
      * @Route("/sorties/list", name="sorties_list")
      */

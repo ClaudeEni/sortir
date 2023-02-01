@@ -16,7 +16,7 @@
             <img class="avatar rounded mb-1" src="{{ asset('uploads/avatars/' ~ participant.id ~ ".png") }}"
                 onerror="this.src='../../assets/img/no_img.png'" ></img>
             <div class="form-floating">
-                <input type="text" class="form-control" placeholder="Pseudonyme" value={{ participant.pseudonyme }} disabled/>
+                <input type="text" class="form-control"placeholder="Pseudonyme" value={{ participant.pseudonyme }} disabled/>
                 <label>Pseudonyme</label>
             </div>
             <div class="form-floating">
@@ -114,7 +114,7 @@
         <p style="text-align: center">
             <a href="{{ path('sorties_list') }}"><button class="btn btn-primary" name="bouton"
                     value="Enregistrer">Enregistrer</button></a>
-            <a href="{{ path('sorties_list') }}"><button name="bouton" class="btn btn-secondary" value="Annuler">Annuler</button></a>
+            <a href="{{ path('sorties_list') }}" class="btn btn-warning">Annuler</a>
         </p>
         <a class="link-secondary" href="{{ path('modif_mdp',{'id':participant.id}) }}">Modifier mon mot de passe</a>
         {{form_end(ParticipantForm) }}

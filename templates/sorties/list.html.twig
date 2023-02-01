@@ -143,7 +143,7 @@
                             {% elseif ('now'|date('Y/m/d')<=(sortie.dateLimiteInscription|date('Y/m/d')) and sortie.participants.count < sortie.nbInscriptionsMax) %}
                                 <a href="{{ path('sortie_inscription_sortie',{'id':sortie.id}) }}">S'inscrire</a>
                             {% endif %}
-                            {% if sortie.participantOrganisateur == user %}
+                            {% if sortie.participantOrganisateur == user or app.user.administrateur %}
                                 <a  href="{{ path('sorties_annulerSortie',{'id':sortie.id}) }}">Annuler</a>
                             {% endif %}
                         {% endif %}
