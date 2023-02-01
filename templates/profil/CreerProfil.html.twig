@@ -10,6 +10,8 @@
 
 {% block body %}
 
+
+
 <main class="form-custom form w-100 m-auto text-center">
     {{form_start(participantForm) }}
     <h1 class="h3 mb-3 fw-normal">Nouvel utilisateur</h1>
@@ -81,13 +83,23 @@
         <label class="form-check-label" for="admin">Administrateur</label>
     </div>
 
-    {{ form_rest(participantForm) }}
+{#    {{ form_rest(participantForm) }}#}
 
     <p style="text-align: center">
         <a href="{{ path('sorties_list') }}"><button class="btn btn-primary" name="bouton" value="Enregistrer">Enregistrer</button></a>
         <a href="{{path('sorties_list')}}" class="btn btn-warning">Annuler</a>
     </p>
+
+{#    {{ form_widget(participantForm.import)}}#}
     {{form_end(participantForm) }}
+
+    <br>
+    <h1 class="h3 mb-3 fw-normal">Import d'une liste d'utilisateurs</h1>
+    {{ form_start(participantImportForm) }}
+    {{ form_widget(participantImportForm.import) }}
+    <br>
+    {{ form_end(participantImportForm) }}
+
 </main>
 {% endblock %}
 
