@@ -66,8 +66,8 @@ class ProfilController extends AbstractController
                     $participant_mail = $participantRepository->findOneBy(["mail"=>$data[4]]);
                     $participant_pseudo = $participantRepository->findOneBy(["pseudonyme"=>$data[5]]);
 
-                    // si un participant existe avec le même mail ou pseudo, on ne l'ajoute pas
-                    if ($participant_mail or $participant_pseudo){
+                    // si un participant existe avec le même mail ou pseudo ou que le campus n'existe pas, on ne l'ajoute pas
+                    if ($participant_mail or $participant_pseudo or !$campus){
                         $userko++;
                     }
                     else{
@@ -92,8 +92,8 @@ class ProfilController extends AbstractController
                     $this->addflash('success', $user.$message);
                 }
                 if($userko>0){
-                    $messageko= ($userko===1) ? " utilisateur n'a pas pu être créé" : " utilisateurs n'ont  pas pu être créés"." Le mail et/ou le pseudo existe déjà !";
-                    $this->addflash('warning', $userko.$messageko);
+                    $messageko=($userko===1) ? " utilisateur " : " utilisateurs.";
+                    $this->addflash('warning',  "Erreur sur ".$userko.$messageko." Le mail et/ou le pseudo existe déjà ou le campus n'existe pas!");
                 }
                 fclose($handle);
             }
