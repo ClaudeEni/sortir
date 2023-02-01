@@ -105,7 +105,7 @@ class SortiesController extends AbstractController
         $organisateur = $sortie->getParticipantOrganisateur() === $this->getUser();
 
         if ($organisateur && $sortie != null && $etat == "Créée"){
-            $modifierSortieForm = $this->createForm(ModifierSortieType::class, $sortie);
+            $modifierSortieForm = $this->createForm(CreerSortieType::class, $sortie);
             $modifierSortieForm->handleRequest($request);
 
             if ($modifierSortieForm->get('enregistrer')->isClicked()) {
@@ -127,10 +127,10 @@ class SortiesController extends AbstractController
             return $this->redirectToRoute('sorties_list');
         }
 
-        return $this->render('sorties/modifierSortie.html.twig', [
+        return $this->render('sorties/creerSortie.html.twig', [
             "user" => $user,
             'sortie'=>$sortie,
-            "modifierSortieForm" => $modifierSortieForm->createView()
+            "creerSortieForm" => $modifierSortieForm->createView()
         ]);
     }
 
@@ -162,7 +162,6 @@ class SortiesController extends AbstractController
             'supprimerSortieForm'=>$supprimerSortieForm->createView()
         ]);
     }
-
 
     /**
      * @Route("/sorties/annulerSortie/{id}", name="sorties_annulerSortie", requirements={"id"="\d+"})
