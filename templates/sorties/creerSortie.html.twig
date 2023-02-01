@@ -89,7 +89,7 @@
 {% block javascripts %}
     <script>
         window.onload = () => {
-            // On va chercher la région
+            // On va chercher la ville
             let ville = document.querySelector("#creer_sortie_ville");
 
             ville.addEventListener("change", function (){
@@ -109,7 +109,7 @@
             /*let lieu = document.querySelector("#creer_sortie_lieu");
 
             lieu.addEventListener("change", function (){
-                document.querySelector("#sortie_rue").innerHTML = lieu.dataset.rue;
+                console.log(ville.dataset.rue)
             });*/
 
         }
