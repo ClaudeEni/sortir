@@ -9,7 +9,7 @@
 
 {% block body %}
     <main class="form-custom form w-100 m-auto text-center" style="padding-bottom: 30px">
-        <h2>Créer une nouvelle sortie :</h2><br>
+        <h2>{% if modifier is defined %}Modifier{% else %}Créer{% endif %} une sortie :</h2><br>
 
         {{ form_start(creerSortieForm) }}
 
@@ -71,12 +71,31 @@
             <div id="sortie_rue" style="font-weight: bold"></div>
         </div><br>
 
+        <div>
+            <label for="sortie_cp">Code postal :</label>
+            <div id="sortie_cp" style="font-weight: bold"></div>
+        </div><br>
+
+        <div>
+            <label for="sortie_latitude">Latitude :</label>
+            <div id="sortie_latitude" style="font-weight: bold"></div>
+        </div><br>
+
+        <div>
+            <label for="sortie_logitude">Longitude :</label>
+            <div id="sortie_logitude" style="font-weight: bold"></div>
+        </div><br>
+
         <br><br>
 
         <div>
             {{ form_widget(creerSortieForm.enregistrer, {'attr': {'class': 'btn btn-success'}}) }}
 
             {{ form_widget(creerSortieForm.publier, {'attr': {'class': 'btn btn-primary'}}) }}
+
+            {% if modifier is defined %}
+                <a href="{{ path('sorties_supprimerSortie', {id:sortie.id}) }}" class="btn btn-danger">Supprimer la sortie</a>
+            {% endif %}
 
             <a href="{{path('sorties_list')}}" class="btn btn-warning">Annuler</a>
         </div>
@@ -106,12 +125,13 @@
                     })
             });
 
-            /*let lieu = document.querySelector("#creer_sortie_lieu");
-
+            let lieu = document.querySelector("#creer_sortie_lieu");
             lieu.addEventListener("change", function (){
-                console.log(ville.dataset.rue)
-            });*/
-
+                document.querySelector("#sortie_rue").innerHTML = "rue Random";
+                document.querySelector("#sortie_cp").innerHTML = "11111";
+                document.querySelector("#sortie_latitude").innerHTML = "N22'22'22";
+                document.querySelector("#sortie_logitude").innerHTML = "E33'33'33";
+            });
         }
     </script>
 {% endblock %}
