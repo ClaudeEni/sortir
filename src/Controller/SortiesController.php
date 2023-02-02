@@ -88,7 +88,8 @@ class SortiesController extends AbstractController
 
         return $this->render('sorties/creerSortie.html.twig', [
             "user" => $user,
-            "creerSortieForm" => $creerSortieForm->createView()
+            "creerSortieForm" => $creerSortieForm->createView(),
+            "creer"=>true
         ]);
     }
 
@@ -110,10 +111,10 @@ class SortiesController extends AbstractController
 
             if ($modifierSortieForm->get('enregistrer')->isClicked()) {
                 $sortie->setEtat($etatCreee);
-                $message = 'Votre sortie a été créée avec succès';
+                $message = 'Votre sortie a été modifiée avec succès';
             }elseif ($modifierSortieForm->get('publier')->isClicked()){
                 $sortie->setEtat($etatOuverte);
-                $message = 'Votre sortie a été publiée avec succès';
+                $message = 'Votre sortie a été modifiée avec succès';
             }
 
             if ($modifierSortieForm->isSubmitted() and $modifierSortieForm->isValid() ) {

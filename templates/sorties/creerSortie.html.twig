@@ -66,25 +66,27 @@
             {{ form_errors(creerSortieForm.lieu) }}
         </div><br>
 
-        <div>
-            <label for="sortie_rue">Rue :</label>
-            <div id="sortie_rue" style="font-weight: bold"></div>
-        </div><br>
+        {% if creer is defined %}
+            <div>
+                <label for="sortie_rue">Rue :</label>
+                <div id="sortie_rue" style="font-weight: bold"></div>
+            </div><br>
 
-        <div>
-            <label for="sortie_cp">Code postal :</label>
-            <div id="sortie_cp" style="font-weight: bold"></div>
-        </div><br>
+            {# <div>
+                <label for="sortie_cp">Code postal :</label>
+                <div id="sortie_cp" style="font-weight: bold"></div>
+            </div><br> #}
 
-        <div>
-            <label for="sortie_latitude">Latitude :</label>
-            <div id="sortie_latitude" style="font-weight: bold"></div>
-        </div><br>
+            <div>
+                <label for="sortie_latitude">Latitude :</label>
+                <div id="sortie_latitude" style="font-weight: bold"></div>
+            </div><br>
 
-        <div>
-            <label for="sortie_logitude">Longitude :</label>
-            <div id="sortie_logitude" style="font-weight: bold"></div>
-        </div><br>
+            <div>
+                <label for="sortie_longitude">Longitude :</label>
+                <div id="sortie_longitude" style="font-weight: bold"></div>
+            </div><br>
+        {% endif %}
 
         <br><br>
 
@@ -119,7 +121,12 @@
                     .then(json => {
                         let options = ''
                             json.map(lieu => {
-                                options += `<option value="${lieu.id}" data-rue="${lieu.rue}">${lieu.nom}</option>`
+                                options += `<option value="${lieu.id}"
+                                data-rue="${lieu.rue}"
+                                data-codePostal="${lieu.codePostal}"
+                                data-latitude="${lieu.latitude}"
+                                data-longitude="${lieu.longitude}"
+                                >${lieu.nom}</option>`
                             })
                         document.querySelector("#creer_sortie_lieu").innerHTML = options;
                     })
@@ -127,10 +134,11 @@
 
             let lieu = document.querySelector("#creer_sortie_lieu");
             lieu.addEventListener("change", function (){
-                document.querySelector("#sortie_rue").innerHTML = "rue Random";
-                document.querySelector("#sortie_cp").innerHTML = "11111";
-                document.querySelector("#sortie_latitude").innerHTML = "N22'22'22";
-                document.querySelector("#sortie_logitude").innerHTML = "E33'33'33";
+                const lieuSelected = lieu.options[lieu.selectedIndex];
+                document.querySelector("#sortie_rue").innerHTML = lieuSelected.dataset.rue;
+                //document.querySelector("#sortie_cp").innerHTML = lieuSelected.dataset.codePostal;
+                document.querySelector("#sortie_latitude").innerHTML = lieuSelected.dataset.latitude;
+                document.querySelector("#sortie_longitude").innerHTML = lieuSelected.dataset.longitude;
             });
         }
     </script>
