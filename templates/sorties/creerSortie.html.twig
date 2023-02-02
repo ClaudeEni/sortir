@@ -33,13 +33,13 @@
 
         <div>
             <label for="sortie_nbInscriptionsMax">Nombre de places :</label>
-            {{ form_widget(creerSortieForm.nbInscriptionsMax, {'attr': {'class': 'input-group-text w-25 m-auto text-center'}}) }}
+            {{ form_widget(creerSortieForm.nbInscriptionsMax, {'attr': {'class': 'input-group-text w-25 m-auto text-center', 'min':'0'}}) }}
             {{ form_errors(creerSortieForm.nbInscriptionsMax) }}
         </div><br>
 
         <div>
             <label for="sortie_duree">Durée de la sortie :</label>
-            {{ form_widget(creerSortieForm.duree, {'attr': {'class': 'input-group-text w-25 m-auto text-center'}}) }}
+            {{ form_widget(creerSortieForm.duree, {'attr': {'class': 'input-group-text w-25 m-auto text-center', 'min':'1'}}) }}
             {{ form_errors(creerSortieForm.duree) }}
         </div><br>
 

@@ -21,11 +21,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 use function PHPUnit\Framework\throwException;
 
 class SortiesController extends AbstractController
 {
+    private Security $security;
 
+    public function __construct(Security $security){
+        $this->security = $security;
+    }
 
     /**
      * @Route("/sorties/list", name="sorties_list")
@@ -178,6 +183,7 @@ class SortiesController extends AbstractController
                                   AnnulerSortieType $annulerSortieType): Response
     {
         $sortie = $sortieRepository->find($id);
+        $userAutorise = $sortie->getParticipantOrganisateur() === $this->getUser() || $this->security->isGranted('ROLE_ADMIN');
 
         if (!$sortie){
             throw $this->createNotFoundException('Cette sortie n\'est pas valide !');
@@ -186,21 +192,25 @@ class SortiesController extends AbstractController
         $annulerSortieForm = $this->createForm(AnnulerSortieType::class,$sortie);
         $annulerSortieForm->handleRequest($request);
 
-        if($annulerSortieForm->isSubmitted() && $annulerSortieForm->isValid()){
-            if ($annulerSortieForm->get('save')->isClicked()){
-                //récupérarion de l'état "Annulée" pour le mettre à la sortie
-                $etatAnnulee = $etatRepository->findOneBy(["libelle"=>"Annulée"]);
-                $sortie->setEtat($etatAnnulee);
-
-                $entityManager->persist($sortie);
-                $entityManager->flush();
-
-                $message="La sortie ".$sortie->getNom()." a bien été annulée avec succès";
-                $this->addflash('success', $message);
-            }
+        if (!$userAutorise){
+            $this->addFlash('warning', 'Vous ne pouvez pas annuler cette sortie.');
             return $this->redirectToRoute('sorties_list');
-        }
+        }else{
+            if($annulerSortieForm->isSubmitted() && $annulerSortieForm->isValid()){
+                if ($annulerSortieForm->get('save')->isClicked()){
+                    //récupérarion de l'état "Annulée" pour le mettre à la sortie
+                    $etatAnnulee = $etatRepository->findOneBy(["libelle"=>"Annulée"]);
+                    $sortie->setEtat($etatAnnulee);
 
+                    $entityManager->persist($sortie);
+                    $entityManager->flush();
+
+                    $message="La sortie ".$sortie->getNom()." a bien été annulée avec succès";
+                    $this->addflash('success', $message);
+                }
+                return $this->redirectToRoute('sorties_list');
+            }
+        }
         return $this->render('sorties/annulerSortie.html.twig',[
             'sortie'=>$sortie,
             'annulerSortieForm'=>$annulerSortieForm->createView()
@@ -219,6 +229,7 @@ class SortiesController extends AbstractController
                                   AnnulerSortieType $annulerSortieType): Response
     {
         $sortie = $sortieRepository->find($id);
+        $organisateur = $sortie->getParticipantOrganisateur() === $this->getUser();
 
         if (!$sortie){
             $this->addFlash('warning', 'Vous ne pouvez pas publier cette sortie.');
@@ -228,26 +239,29 @@ class SortiesController extends AbstractController
         $publierSortieForm = $this->createForm(PublierSortieType::class,$sortie);
         $publierSortieForm->handleRequest($request);
 
-        if($publierSortieForm->isSubmitted() && $publierSortieForm->isValid()){
-            if ($publierSortieForm->get('publier')->isClicked()){
-                //récupérarion de l'état "Ouverte" pour le mettre à la sortie
-                $etatOuverte = $etatRepository->findOneBy(["libelle"=>"Ouverte"]);
-                $sortie->setEtat($etatOuverte);
-
-                $entityManager->persist($sortie);
-                $entityManager->flush();
-
-                $message="La sortie ".$sortie->getNom()." a été publiée avec succès";
-                $this->addflash('success', $message);
-            }
+        if (!$organisateur) {
+            $this->addFlash('warning', 'Vous ne pouvez pas publier cette sortie.');
             return $this->redirectToRoute('sorties_list');
-        }
+        }else{
+            if($publierSortieForm->isSubmitted() && $publierSortieForm->isValid()){
+                if ($publierSortieForm->get('publier')->isClicked()){
+                    //récupérarion de l'état "Ouverte" pour le mettre à la sortie
+                    $etatOuverte = $etatRepository->findOneBy(["libelle"=>"Ouverte"]);
+                    $sortie->setEtat($etatOuverte);
 
+                    $entityManager->persist($sortie);
+                    $entityManager->flush();
+
+                    $message="La sortie ".$sortie->getNom()." a été publiée avec succès";
+                    $this->addflash('success', $message);
+                }
+                return $this->redirectToRoute('sorties_list');
+            }
+    }
         return $this->render('sorties/publierSortie.html.twig',[
             'sortie'=>$sortie,
             'publierSortieForm'=>$publierSortieForm->createView()
         ]);
-
     }
 
     /**
