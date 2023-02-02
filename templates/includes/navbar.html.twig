@@ -11,9 +11,12 @@
         {% if app.user %}
             {% if app.user.administrateur %}
                 <li class="nav-item">
-                    <a class="nav-link d-none d-sm-block" href="{{ path('nouveau_profil') }}">Créer utilisateur</a>
+                    <a class="nav-link" href="{{ path('nouveau_profil') }}">Créer utilisateur</a>
                 </li>
             {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link d-none d-sm-block" aria-current="page" href="{{ path('sorties_creerSortie') }}">Créer sortie</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path('profil_afficher',{'id':app.user.id})}}" style="margin-right: 10px"> Mon profil </a>
                 </li>
@@ -26,5 +29,6 @@
                     <a class="nav-item nav-link" aria-current="page" href="{{ path('app_login') }}">Se connecter</a>
                 </li>
         {% endif %}
+    </ul>
   </div>
 </nav>
