@@ -21,9 +21,9 @@ class PublierSortieType extends AbstractType
                 ]
             ])
             ->add('annuler', SubmitType::class, [
-                'label' => 'Annuler',
+                'label' => 'Retour',
                 'attr' => [
-                    'class'          => 'btn btn-secondary',
+                    'class'          => 'btn btn-warning',
                     'formnovalidate' => 'formnovalidate',
                 ]
             ])

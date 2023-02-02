@@ -23,7 +23,7 @@ class ImportParticipantType extends AbstractType
             ->add('importer', SubmitType::class, [
                 'label' => 'Importer le fichier',
                 'attr' => [
-                    'class'          => 'btn btn-success',
+                    'class'          => 'btn btn-primary',
                     'formnovalidate'=>'formnovalidate'
                 ]
             ])
