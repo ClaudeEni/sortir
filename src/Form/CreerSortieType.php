@@ -7,6 +7,7 @@ use App\Entity\Lieu;
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Entity\Ville;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -23,6 +24,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreerSortieType extends AbstractType
 {
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -33,8 +44,8 @@ class CreerSortieType extends AbstractType
             ->add('duree', IntegerType::class, ['label'=>'Durée'])
             ->add('infosSortie', TextareaType::class, ['label'=>'Description et infos'])
             //->add('campus', EntityType::class, ['label'=>'Campus', 'class'=>Campus::class])
-            ->add('ville', EntityType::class, ['placeholder'=>'Veuillez choisir une ville', 'label'=>'Ville', 'class'=>Ville::class, 'choice_label'=>'nom', 'mapped'=>false])
-            ->add('lieu', ChoiceType::class, ['placeholder'=>'Veuillez choisir un lieu'])
+            //->add('ville', EntityType::class, ['placeholder'=>'Veuillez choisir une ville', 'label'=>'Ville', 'class'=>Ville::class, 'choice_label'=>'nom', 'mapped'=>false])
+            //->add('lieu', EntityType::class, ['placeholder'=>'Veuillez choisir un lieu', 'class'=>Lieu::class])
             //->add('rue', EntityType::class, ['label'=>'Rue', 'class'=>'App\Entity\Lieu', 'choice_label'=>'rue']) TODO: les 4 champs suivants doivent être gérés en front et seront affichés après avoir sélectionné le lieu
             //->add('codePostal', TextType::class, ['label'=>'Code postal'])
             //->add('latitude', TextType::class, ['label'=>'Latitude'])
@@ -43,8 +54,16 @@ class CreerSortieType extends AbstractType
             ->add('publier', SubmitType::class, ['label'=>'Publier la sortie'])
         ;
 
-        $formModifier = function (FormInterface $form, Ville $ville = null){
+        $formModifier = function (FormInterface $form, ?Ville $ville = null){
             $lieux = (null === $ville) ? [] : $ville->getLieus();
+            $form->add('ville', EntityType::class, [
+                'placeholder'=>'Veuillez choisir une ville',
+                'label'=>'Ville', 'class'=>Ville::class,
+                'choice_label'=>'nom',
+                'mapped'=>false,
+                'data' => $ville
+            ]);
+
             $form->add('lieu', EntityType::class, [
                 'class'=>Lieu::class,
                 'choices'=>$lieux,
@@ -54,11 +73,23 @@ class CreerSortieType extends AbstractType
             ]);
         };
 
-        $builder->get('ville')->addEventListener(
-            FormEvents::POST_SUBMIT,
+        $builder->addEventListener(
+            FormEvents::PRE_SUBMIT,
             function (FormEvent $event) use ($formModifier){
-                $ville = $event->getForm()->getData();
-                $formModifier($event->getForm()->getParent(), $ville);
+                $ville = $this->entityManager->getRepository(Ville::class)->find($event->getData()['ville']);
+                $formModifier($event->getForm(), $ville);
+            }
+        );
+
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($formModifier){
+                $sortie = $event->getData();
+                if (!$sortie){
+                    return;
+                }
+                $ville = $sortie->getLieu() ? $sortie->getLieu()->getVille() : null;
+                $formModifier($event->getForm(), $ville);
             }
         );
     }

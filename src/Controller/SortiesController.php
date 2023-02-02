@@ -90,7 +90,8 @@ class SortiesController extends AbstractController
 
         return $this->render('sorties/creerSortie.html.twig', [
             "user" => $user,
-            "creerSortieForm" => $creerSortieForm->createView()
+            "creerSortieForm" => $creerSortieForm->createView(),
+            "creer"=>true
         ]);
     }
 
@@ -107,15 +108,15 @@ class SortiesController extends AbstractController
         $organisateur = $sortie->getParticipantOrganisateur() === $this->getUser();
 
         if ($organisateur && $sortie != null && $etat == "Créée"){
-            $modifierSortieForm = $this->createForm(ModifierSortieType::class, $sortie);
+            $modifierSortieForm = $this->createForm(CreerSortieType::class, $sortie);
             $modifierSortieForm->handleRequest($request);
 
             if ($modifierSortieForm->get('enregistrer')->isClicked()) {
                 $sortie->setEtat($etatCreee);
-                $message = 'Votre sortie a été créée avec succès';
+                $message = 'Votre sortie a été modifiée avec succès';
             }elseif ($modifierSortieForm->get('publier')->isClicked()){
                 $sortie->setEtat($etatOuverte);
-                $message = 'Votre sortie a été publiée avec succès';
+                $message = 'Votre sortie a été modifiée avec succès';
             }
 
             if ($modifierSortieForm->isSubmitted() and $modifierSortieForm->isValid() ) {
@@ -129,10 +130,11 @@ class SortiesController extends AbstractController
             return $this->redirectToRoute('sorties_list');
         }
 
-        return $this->render('sorties/modifierSortie.html.twig', [
+        return $this->render('sorties/creerSortie.html.twig', [
             "user" => $user,
             'sortie'=>$sortie,
-            "modifierSortieForm" => $modifierSortieForm->createView()
+            "creerSortieForm" => $modifierSortieForm->createView(),
+            "modifier"=>true
         ]);
     }
 
@@ -164,7 +166,6 @@ class SortiesController extends AbstractController
             'supprimerSortieForm'=>$supprimerSortieForm->createView()
         ]);
     }
-
 
     /**
      * @Route("/sorties/annulerSortie/{id}", name="sorties_annulerSortie", requirements={"id"="\d+"})
