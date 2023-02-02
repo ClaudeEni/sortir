@@ -1,42 +1,30 @@
-﻿<nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="{{ path('sorties_list') }}">Sortir.com</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+﻿<nav class="fixed-top navbar navbar-expand-lg navbar-light bg-light p-1">
+  <a class="navbar-brand" href="#">Sortir.com</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="{{ path('sorties_list') }}">Accueil</a>
+      </li>
+        {% if app.user %}
+            {% if app.user.administrateur %}
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="{{ path('sorties_list') }}">Accueil</a>
+                    <a class="nav-link d-none d-sm-block" href="{{ path('nouveau_profil') }}">Créer utilisateur</a>
+                </li>
+            {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('profil_afficher',{'id':app.user.id})}}" style="margin-right: 10px"> Mon profil </a>
                 </li>
                 <li class="nav-item">
-                   <a class="nav-link" aria-current="page" href="{{ path('sorties_creerSortie') }}">Créer sortie</a>
-               </li>
-            </ul>
-            {# Si l'utilisateur est connecté #}
-            {% if app.user %}
-                {% if app.user.administrateur %}
-                <div class="d-flex d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3">
-                    <a class="nav-link" aria-current="page" href="{{ path('nouveau_profil') }}" style="margin-right: 10px">Créer utilisateur</a>
-                </div>
-                {% endif %}
-{#                <div class="d-flex d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3">#}
-{#                    <a class="nav-link" aria-current="page" href="{{ path('profil_afficher',{'id':app.user.id})}}">Mon profil</a>#}
-{#                    <a class="nav-link" aria-current="page" href="{{ path('app_logout') }}">Se déconnecter({{ app.user.pseudonyme }})</a>#}
-{#                </div>#}
-                <div class="d-flex d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3">
-                    <a class="nav-link" aria-current="page" href="{{ path('profil_afficher',{'id':app.user.id})}}" style="margin-right: 10px"> Mon profil </a>
-                </div>
-                <div class="d-flex d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3">
                     <a class="nav-link" aria-current="page" href="{{ path('app_logout') }}" style="margin-right: 10px"> Se déconnecter({{ app.user.pseudonyme }}) </a>
-                </div>
+                </li>
             {% else %}
             {# Si l'utilisateur n'est pas connecté #}
-                <div class="d-flex d-none d-lg-inline-block mb-3 mb-md-0 ml-md-3">
+                <li class="nav-item">
                     <a class="nav-item nav-link" aria-current="page" href="{{ path('app_login') }}">Se connecter</a>
-                </div>
-            {% endif %}
-        </div>
-    </div>
+                </li>
+        {% endif %}
+  </div>
 </nav>
