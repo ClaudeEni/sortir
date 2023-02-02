@@ -153,7 +153,7 @@
                                 <a href="{{ path('sortie_sedesister',{'id':sortie.id}) }}">Se désister</a>
                             {% endif %}
                             {% if sortie.participantOrganisateur == user %}
-                                <a href="">Annuler</a>
+                                <a  href="{{ path('sorties_annulerSortie',{'id':sortie.id}) }}">Annuler</a>
                             {% endif %}
                         {% endif %}
                         {% if sortie.etat.libelle=='En cours' or sortie.etat.libelle=='Passée' or sortie.etat.libelle=='Annulée' %}
