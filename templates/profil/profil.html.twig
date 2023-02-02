@@ -16,27 +16,27 @@
             <img class="avatar rounded mb-1" src="{{ asset('uploads/avatars/' ~ participant.id ~ ".png") }}"
                 onerror="this.src='../../assets/img/no_img.png'" ></img>
             <div class="form-floating">
-                <input type="text" class="form-control"placeholder="Pseudonyme" value={{ participant.pseudonyme }} disabled/>
+                <input type="text" class="form-control"placeholder="Pseudonyme" value="{{ participant.pseudonyme }}" disabled/>
                 <label>Pseudonyme</label>
             </div>
             <div class="form-floating">
-                <input type="text" class="form-control" placeholder="Pseudonyme" value={{ participant.nom }} disabled/>
+                <input type="text" class="form-control" placeholder="Pseudonyme" value="{{ participant.nom }}" disabled/>
                 <label>Nom</label>
             </div>
             <div class="form-floating">
-                <input type="text" class="form-control" placeholder="Pseudonyme" value={{ participant.prenom }} disabled/>
+                <input type="text" class="form-control" placeholder="Pseudonyme" value="{{ participant.prenom }}" disabled/>
                 <label>Prénom</label>
             </div>
             <div class="form-floating">
-                <input type="text" class="form-control" placeholder="Pseudonyme" value={{ participant.telephone }} disabled/>
+                <input type="text" class="form-control" placeholder="Pseudonyme" value="{{ participant.telephone }}" disabled/>
                 <label>Téléphone</label>
             </div>
             <div class="form-floating">
-                <input type="text" class="form-control" placeholder="Pseudonyme" value={{ participant.mail }} disabled/>
+                <input type="text" class="form-control" placeholder="Pseudonyme" value="{{ participant.mail }}" disabled/>
                 <label>Mail</label>
             </div>
             <div class="form-floating">
-                <input type="text" class="form-control" placeholder="Pseudonyme" value={{ participant.campus.nom }} disabled/>
+                <input type="text" class="form-control" placeholder="Pseudonyme" value="{{ participant.campus.nom }}" disabled/>
                 <label>Campus</label>
             </div>
             <a href="{{ path('sorties_list') }}"><button name="bouton" class="btn btn-secondary" value="Retour">Retour</button></a>
