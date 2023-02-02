@@ -4,29 +4,47 @@
 
 {% endblock %}
 
+{% block stylesheets %}
+    <link href="../../assets/styles/creer-sortie.css" rel="stylesheet">
+{% endblock %}
+
 {% block body %}
 
-    <h2>Supprimer une sortie</h2>
+    <main class="form-custom form w-100 m-auto text-center">
+        <h2>Supprimer une sortie</h2><br><br>
 
-    <div>
-        <label>Nom de la sortie : </label>
-        {{ sortie.nom }}
-    </div>
-    <div>
-        <label>Date de la sortie : </label>
-        {{ sortie.dateHeureDebut|date('d/m/Y') }}
-    </div>
-    <div>
-        <label>Campus : </label>
-        {{ sortie.campus.nom }}
-    </div>
-    <div>
-        <label>Lieu : </label>
-        {{ sortie.lieu.nom }} {{ sortie.lieu.rue }} {{ sortie.lieu.ville.codePostal }} {{ sortie.lieu.ville.nom }}
-    </div>
+        <div>
+            <label>Nom de la sortie : </label>
+            {{ sortie.nom }}
+        </div><br>
+        <div>
+            <label>Date de la sortie : </label>
+            {{ sortie.dateHeureDebut|date('d/m/Y') }}
+        </div><br>
+        <div>
+            <label>Campus : </label>
+            {{ sortie.campus.nom }}
+        </div><br>
+        <div>
+            <label>Lieu : </label>
+            {{ sortie.lieu.nom }}
+        </div><br>
+        <div>
+            <label>Rue : </label>
+            {{ sortie.lieu.rue }}
+        </div><br>
+        <div>
+            <label>Code Postal : </label>
+            {{ sortie.lieu.ville.codePostal }}
+        </div><br>
+        <div>
+            <label>Ville : </label>
+            {{ sortie.lieu.ville.nom }}
+        </div><br><br>
 
+        {{ form_start(supprimerSortieForm) }}
+        {{ form_end(supprimerSortieForm) }}
 
-    {{ form_start(supprimerSortieForm) }}
-    {{ form_end(supprimerSortieForm) }}
+    </main>
 
 {% endblock %}
