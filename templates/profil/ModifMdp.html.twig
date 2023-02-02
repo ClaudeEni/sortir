@@ -29,7 +29,7 @@
         <p style="text-align: center">
             <a href="{{ path('sorties_list') }}"><button class="btn btn-success" name="bouton"
                     value="Enregistrer">Enregistrer</button></a>
-            {# <a href="{{ path('profil_afficher',{'id':app.user.id})}}"><button name="bouton" class="btn btn-warning" value="Annuler">Retour</button></a> #}
+            <a class="btn btn-warning" href="{{ path('profil_afficher',{'id':app.user.id})}}">Retour</a>
         </p>
         {{form_end(ParticipantForm) }}
 </main>
