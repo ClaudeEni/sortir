@@ -126,7 +126,7 @@ class SortiesController extends AbstractController
                 return $this->redirectToRoute('sorties_list');
             }
         }else{
-            $this->addFlash('error','Vous ne pouvez pas modifier cette sortie.');
+            $this->addFlash('warning','Vous ne pouvez pas modifier cette sortie.');
             return $this->redirectToRoute('sorties_list');
         }
 
@@ -145,7 +145,7 @@ class SortiesController extends AbstractController
     {
         $sortie = $sortieRepository->find($id);
         if (!$sortie){
-            $this->addFlash('error', 'Vous ne pouvez pas supprimer cette sortie.');
+            $this->addFlash('warning', 'Vous ne pouvez pas supprimer cette sortie.');
             return $this->redirectToRoute('sorties_list');
         }
 
@@ -221,7 +221,7 @@ class SortiesController extends AbstractController
         $sortie = $sortieRepository->find($id);
 
         if (!$sortie){
-            $this->addFlash('error', 'Vous ne pouvez pas publier cette sortie.');
+            $this->addFlash('warning', 'Vous ne pouvez pas publier cette sortie.');
             return $this->redirectToRoute('sorties_list');
         }
 
@@ -269,12 +269,12 @@ class SortiesController extends AbstractController
 
         // on ne peut s'inscrire si la sortie est ouverte
         if ($sortie->getEtat() != $etatOuverte) {
-            $message = "La sortie " . $sortie->getNom() . " n\'est pas ouverte, l\'inscription n\'est pas possible";
-            $this->addflash('success', $message);
+            $message = "La sortie " . $sortie->getNom() . " n'est pas ouverte, l'inscription n'est pas possible";
+            $this->addflash('warning', $message);
         } // et avec de la place
         elseif ($sortie->getParticipants()->count() == $sortie->getNbInscriptionsMax()) {
-            $message = "Le nombre maximum d\'inscrit est atteint, l\'inscription à la sortie " . $sortie->getNom() . "n\'est pas possible";
-            $this->addflash('success', $message);
+            $message = "Le nombre maximum d'inscrit est atteint, l'inscription à la sortie " . $sortie->getNom() . "n'est pas possible";
+            $this->addflash('warning', $message);
         } // inscription possible
         else {
             $sortie->addParticipant($this->getUser());
@@ -306,8 +306,8 @@ class SortiesController extends AbstractController
         }
         // on ne peut se désinscrire que si la sortie est ouverte
         if ($sortie->getEtat() != $etatOuverte and $sortie->getEtat() != $etatCloture) {
-            $message = "La sortie " . $sortie->getNom() . " n\'est ni ouverte ni clôturée, la désinscription n\'est pas possible";
-            $this->addflash('success', $message);
+            $message = "La sortie " . $sortie->getNom() . " n'est ni ouverte ni clôturée, la désinscription n'est pas possible";
+            $this->addflash('warning', $message);
         }
         else{
             $sortie->removeParticipant($this->getUser());
