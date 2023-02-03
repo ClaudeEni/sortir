@@ -203,6 +203,8 @@ class ProfilController extends AbstractController
             return $this->redirectToRoute('sorties_list',[]);
         }
 
+        $entityManager->refresh($participant);
+
         // si le participant est celui connecté, on affiche son profil pour modification
         // sinon on affiche le profil en consultation
         return $this->render('profil/profil.html.twig', [
@@ -239,6 +241,7 @@ class ProfilController extends AbstractController
 
             return $this->redirectToRoute('sorties_list',[]);
         }
+
 
         return $this->render('profil/ModifMdp.html.twig', [
             "participant"=>$participant,
