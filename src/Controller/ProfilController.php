@@ -18,6 +18,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProfilController extends AbstractController
 {
@@ -39,7 +40,8 @@ class ProfilController extends AbstractController
                                   EntityManagerInterface $entityManager,
                                   ModificationProfilType $modificationProfilType,
                                   ParticipantRepository $participantRepository,
-                                  CampusRepository $campusRepository) : Response {
+                                  CampusRepository $campusRepository,
+                                  ValidatorInterface $validator) : Response {
         $participant = new Participant();
 
         // création du formulaire pour saisie des informations
@@ -58,6 +60,8 @@ class ProfilController extends AbstractController
             if (($handle = fopen($file->getPathname(), "r")) !== false) {
                 $user = 0;
                 $userko = 0;
+                $userNoValidate = 0;
+                $errorsString = '';
                 while (($data = fgetcsv($handle,1024,';')) !== false) {
 
                     // recherche du campus
@@ -82,11 +86,18 @@ class ProfilController extends AbstractController
                         $participant->setPassword($passwordHasher->hashPassword($participant,$data[6]));
                         $participant->setAdministrateur(false);
                         $participant->setActif(true);
-                        $entityManager->persist($participant);
-                        $entityManager->flush();
-                        $user++;
+                        $errors = $validator->validate($participant);
+                        if (count($errors)>0){
+                            $userNoValidate++;
+                            $errorsString = (string) $errors;
+                        }
+                        else {
+                            $entityManager->persist($participant);
+                            $user++;
+                        }
                     }
                 }
+                $entityManager->flush();
                 if($user>0){
                     $message= ($user===1) ? " utilisateur a été créé avec succès" : " utilisateurs ont été créés avec succès";
                     $this->addflash('success', $user.$message);
@@ -94,6 +105,10 @@ class ProfilController extends AbstractController
                 if($userko>0){
                     $messageko=($userko===1) ? " utilisateur " : " utilisateurs.";
                     $this->addflash('warning',  "Erreur sur ".$userko.$messageko." Le mail et/ou le pseudo existe déjà ou le campus n'existe pas!");
+                }
+                if($userNoValidate>0){
+                    $messageko=($userNoValidate===1) ? " utilisateur " : " utilisateurs.";
+                    $this->addflash('warning',  "Erreur sur ".$userNoValidate.$messageko."Les contraintes de validations n'ont pas été respectés !".$errorsString);
                 }
                 fclose($handle);
             }
