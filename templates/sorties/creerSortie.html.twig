@@ -72,10 +72,10 @@
                 <div id="sortie_rue" style="font-weight: bold"></div>
             </div><br>
 
-            {# <div>
+            <div>
                 <label for="sortie_cp">Code postal :</label>
                 <div id="sortie_cp" style="font-weight: bold"></div>
-            </div><br> #}
+            </div><br>
 
             <div>
                 <label for="sortie_latitude">Latitude :</label>
@@ -123,7 +123,7 @@
                             json.map(lieu => {
                                 options += `<option value="${lieu.id}"
                                 data-rue="${lieu.rue}"
-                                data-codePostal="${lieu.codePostal}"
+                                data-codePostal="${lieu.ville.codePostal}"
                                 data-latitude="${lieu.latitude}"
                                 data-longitude="${lieu.longitude}"
                                 >${lieu.nom}</option>`
@@ -136,7 +136,7 @@
             lieu.addEventListener("change", function (){
                 const lieuSelected = lieu.options[lieu.selectedIndex];
                 document.querySelector("#sortie_rue").innerHTML = lieuSelected.dataset.rue;
-                //document.querySelector("#sortie_cp").innerHTML = lieuSelected.dataset.codePostal;
+                document.querySelector("#sortie_cp").innerHTML = lieuSelected.dataset.codePostal;
                 document.querySelector("#sortie_latitude").innerHTML = lieuSelected.dataset.latitude;
                 document.querySelector("#sortie_longitude").innerHTML = lieuSelected.dataset.longitude;
             });

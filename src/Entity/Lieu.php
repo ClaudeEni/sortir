@@ -53,6 +53,7 @@ class Lieu
     /**
      * @ORM\ManyToOne(targetEntity=Ville::class, inversedBy="lieus")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"listeLieux"})
      */
     private $ville;
 

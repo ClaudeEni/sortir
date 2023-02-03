@@ -205,7 +205,7 @@ class SortiesController extends AbstractController
                     $entityManager->persist($sortie);
                     $entityManager->flush();
 
-                    $message="La sortie ".$sortie->getNom()." a bien été annulée avec succès";
+                    $message="La sortie ".$sortie->getNom()." a été annulée avec succès";
                     $this->addflash('success', $message);
                 }
                 return $this->redirectToRoute('sorties_list');
