@@ -66,27 +66,25 @@
             {{ form_errors(creerSortieForm.lieu) }}
         </div><br>
 
-        {% if creer is defined %}
-            <div>
-                <label for="sortie_rue">Rue :</label>
-                <div id="sortie_rue" style="font-weight: bold"></div>
-            </div><br>
+        <div>
+            <label for="sortie_rue">Rue :</label>
+            <div id="sortie_rue" style="font-weight: bold"></div>
+        </div><br>
 
-            <div>
-                <label for="sortie_cp">Code postal :</label>
-                <div id="sortie_cp" style="font-weight: bold"></div>
-            </div><br>
+        <div>
+            <label for="sortie_cp">Code postal :</label>
+            <div id="sortie_cp" style="font-weight: bold"></div>
+        </div><br>
 
-            <div>
-                <label for="sortie_latitude">Latitude :</label>
-                <div id="sortie_latitude" style="font-weight: bold"></div>
-            </div><br>
+        <div>
+            <label for="sortie_latitude">Latitude :</label>
+            <div id="sortie_latitude" style="font-weight: bold"></div>
+        </div><br>
 
-            <div>
-                <label for="sortie_longitude">Longitude :</label>
-                <div id="sortie_longitude" style="font-weight: bold"></div>
-            </div><br>
-        {% endif %}
+        <div>
+            <label for="sortie_longitude">Longitude :</label>
+            <div id="sortie_longitude" style="font-weight: bold"></div>
+        </div><br>
 
         <br><br>
 
@@ -112,6 +110,9 @@
         window.onload = () => {
             // On va chercher la ville
             let ville = document.querySelector("#creer_sortie_ville");
+            let lieu = document.querySelector("#creer_sortie_lieu");
+
+            changerLieu();
 
             ville.addEventListener("change", function (){
 
@@ -119,11 +120,11 @@
                 )
                     .then(response => response.json())
                     .then(json => {
-                        let options = ''
+                        let options = '<option value="">Veuillez choisir un lieu</option>'
                             json.map(lieu => {
                                 options += `<option value="${lieu.id}"
                                 data-rue="${lieu.rue}"
-                                data-codePostal="${lieu.ville.codePostal}"
+                                data-codepostal="${lieu.ville.codePostal}"
                                 data-latitude="${lieu.latitude}"
                                 data-longitude="${lieu.longitude}"
                                 >${lieu.nom}</option>`
@@ -132,14 +133,16 @@
                     })
             });
 
-            let lieu = document.querySelector("#creer_sortie_lieu");
-            lieu.addEventListener("change", function (){
+
+            lieu.addEventListener("change", changerLieu);
+
+            function changerLieu(){
                 const lieuSelected = lieu.options[lieu.selectedIndex];
                 document.querySelector("#sortie_rue").innerHTML = lieuSelected.dataset.rue;
-                document.querySelector("#sortie_cp").innerHTML = lieuSelected.dataset.codePostal;
+                document.querySelector("#sortie_cp").innerHTML = lieuSelected.dataset.codepostal;
                 document.querySelector("#sortie_latitude").innerHTML = lieuSelected.dataset.latitude;
                 document.querySelector("#sortie_longitude").innerHTML = lieuSelected.dataset.longitude;
-            });
+            }
         }
     </script>
 {% endblock %}

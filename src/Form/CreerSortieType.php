@@ -69,7 +69,13 @@ class CreerSortieType extends AbstractType
                 'choices'=>$lieux,
                 'choice_label'=>'nom',
                 'placeholder'=>'Veuillez choisir un lieu',
-                'label'=>'Lieu'
+                'label'=>'Lieu',
+                'choice_attr'=>function($lieu){
+                return ['data-rue'=>$lieu->getRue(),
+                    'data-codepostal'=>$lieu->getVille()->getCodePostal(),
+                    'data-latitude'=>$lieu->getLatitude(),
+                    'data-longitude'=>$lieu->getLongitude()];
+                }
             ]);
         };
 
